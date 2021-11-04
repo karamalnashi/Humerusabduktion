@@ -18,8 +18,8 @@ path_current= os.path.abspath(os.getcwd())
 
 ## Reading video
 
-cap = cv2.VideoCapture(r"../videos/test.MOV") #capture by a video file
-#cap = cv2.VideoCapture(0) # capture by your own camera
+#cap = cv2.VideoCapture(r"../videos/test.MOV") #capture by a video file
+cap = cv2.VideoCapture(0) # capture by your own camera
 hasFrame, framee =cap.read()
 frameeWidth= framee.shape[1]
 frameeHeight= framee.shape[0]

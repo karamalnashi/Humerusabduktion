@@ -17,8 +17,8 @@ path_current= os.path.abspath(os.getcwd())
 
 ## Reading video
 
-cap = cv2.VideoCapture(r"../left_hand.mp4")
-#cap = cv2.VideoCapture(0)
+#cap = cv2.VideoCapture(r"../left_hand.mp4")
+cap = cv2.VideoCapture(0)
 hasFrame, framee =cap.read()
 frameeWidth= framee.shape[1]
 frameeHeight= framee.shape[0]
@@ -47,17 +47,16 @@ while True:
 	# print(lmList)
 	if len(lmList) != 0:
 		# Right Arm
-		#angle,difference = detector.findAngle(img, 12, 14, 16)
-		
+		angle , difference = detector.findAngle(img, 14, 12, 24)
 		# # Left Arm
-		angle,difference = detector.findAngle(img, 11, 13, 15)
+		#angle1 , difference1 = detector.findAngle(img, 13, 11, 23)
 		
 		# rounding the angle to put it in a text file
 		rounded_angle= int(angle) 
 		
 		
 		
-		if rounded_angle > 180:
+		if rounded_angle > 9:
 			f = open("angle_file.txt","a")
 			
 			f.write(str(rounded_angle))
