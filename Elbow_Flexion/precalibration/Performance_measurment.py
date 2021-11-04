@@ -49,6 +49,7 @@ while True:
 		# Right Arm
 		angle , difference = detector.findAngle(img, 14, 12, 24)
 		# # Left Arm
+
 		#angle1 , difference1 = detector.findAngle(img, 13, 11, 23)
 		
 		# rounding the angle to put it in a text file
