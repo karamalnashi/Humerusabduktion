@@ -28,7 +28,6 @@ dir1 = 0
 pTime = 0
 x = 0
 z = 1
-
 db = 0.5  # aktuellem Datenbankeintrag / 1 , 0.75, 0.5 , 0,25
 arm=1 # linke-Arm =0 , rechte-Arm
 
