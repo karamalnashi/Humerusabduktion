@@ -27,9 +27,10 @@ dir = 0
 dir1 = 0
 pTime = 0
 x = 0
+t,t1,t2,t3,t4,t5,t6,t7,t8, t9, t10, t11, t12, t13, t14, t15 = 41,41,41,41,41,41,41,41,41,41,41,41,41,41,41,41
 z = 1
-db = 0.5  # aktuellem Datenbankeintrag / 1 , 0.75, 0.5 , 0,25
-arm=1 # linke-Arm =0 , rechte-Arm
+db = 1  # aktuellem Datenbankeintrag / 1 , 0.75, 0.5 , 0,25
+arm=0 # linke-Arm =0 , rechte-Arm
 
 # ###################    MQTT Connect  ##################################################
 broker_address = "l51d159d-internet-facing-6e9635f0905aed75.elb.us-east-1.amazonaws.com"
@@ -63,6 +64,7 @@ client.subscribe("ebrain/#")
 #############################################################################
 
 while True:
+    #time.sleep(4)
     success, img = cap.read()
     img = cv2.resize(img, (1280, 720))
     # img = cv2.imread("AiTrainer/test.jpg")
@@ -124,8 +126,16 @@ while True:
                     data = json.load(f)
                     x = data[4]
                     y4 = json.dumps(x)
-                    client.publish("ebrain/DialogEngine1/interaction", y4)
+                    if t>40:
+                        client.publish("ebrain/DialogEngine1/interaction", y4)
+                        t=0
+                    else:
+                        t=t+1
+                        print(t)
+                    t1,t2,t3,t4,t5,t6,t7,t8, t9, t10, t11, t12, t13, t14, t15 = 41,41,41,41,41,41,41,41,41,41,41,41,41,41,41
+
                 elif angle1 < 65:
+
                     # img = cv2.applyColorMap(img, cv2.COLORMAP_DEEPGREEN)
                     cv2.putText(img, str("Bitte bewege deine linke Hand nach oben"), (20, 50),
                                 cv2.FONT_HERSHEY_PLAIN, 3,
@@ -135,7 +145,13 @@ while True:
                     data = json.load(f)
                     x = data[5]
                     y5 = json.dumps(x)
-                    client.publish("ebrain/DialogEngine1/interaction", y5)
+                    if t1>40:
+                        client.publish("ebrain/DialogEngine1/interaction", y5)
+                        t1 = 0
+                    else:
+                        t1=t1+1
+                        print(t1)
+                    t,t2,t3,t4,t5,t6,t7,t8, t9, t10, t11, t12, t13, t14, t15 = 41,41,41,41,41,41,41,41,41,41,41,41,41,41,41
                 elif 65 < angle1 < 70:
                     # img = cv2.applyColorMap(img, cv2.COLORMAP_DEEPGREEN)
                     cv2.putText(img, str("und noch etwas weiter"), (20, 50),
@@ -146,7 +162,13 @@ while True:
                     data = json.load(f)
                     x = data[6]
                     y6 = json.dumps(x)
-                    client.publish("ebrain/DialogEngine1/interaction", y6)
+                    if t2>40:
+                        client.publish("ebrain/DialogEngine1/interaction", y6)
+                        t2 = 0
+                    else:
+                        t2 = t2 + 1
+                        print(t2)
+                    t,t1,t3,t4,t5,t6,t7,t8, t9, t10, t11, t12, t13, t14, t15 = 41,41,41,41,41,41,41,41,41,41,41,41,41,41,41
                 else:
                     cv2.putText(img, str("noch einen Moment da bleiben und dabei entspannen"), (20, 50),
                                 cv2.FONT_HERSHEY_PLAIN,
@@ -156,8 +178,14 @@ while True:
                     data = json.load(f)
                     x = data[7]
                     y7 = json.dumps(x)
-                    client.publish("ebrain/DialogEngine1/interaction", y7)
-                    z = 0
+                    if t3>40:
+                        client.publish("ebrain/DialogEngine1/interaction", y7)
+                        t3 = 0
+                    else:
+                        t3=t3+1
+                        print(t3)
+                    t,t1,t2,t4,t5,t6,t7,t8, t9, t10, t11, t12, t13, t14, t15 = 41,41,41,41,41,41,41,41,41,41,41,41,41,41,41
+
             # ///////////Wenn der Patient nicht alleine trainieren kann///////////
             else:
                 if angle1 > 75:
@@ -170,7 +198,13 @@ while True:
                     data = json.load(f)
                     x = data[13]
                     y13 = json.dumps(x)
-                    client.publish("ebrain/DialogEngine1/interaction", y13)
+                    if t4>40:
+                        client.publish("ebrain/DialogEngine1/interaction", y13)
+                        t4 = 0
+                    else:
+                        t4=t4+1
+                        print(t4)
+                    t,t1,t2,t3,t5,t6,t7,t8, t9, t10, t11, t12, t13, t14, t15 = 41,41,41,41,41,41,41,41,41,41,41,41,41,41,41
                 elif dba - 5 < angle1 < dba:
                     # img = cv2.applyColorMap(img, cv2.COLORMAP_DEEPGREEN)
                     cv2.putText(img, str("und noch etwas weiter"), (20, 50),
@@ -182,7 +216,13 @@ while True:
                     data = json.load(f)
                     x = data[14]
                     y14 = json.dumps(x)
-                    client.publish("ebrain/DialogEngine1/interaction", y14)
+                    if t5>40:
+                        client.publish("ebrain/DialogEngine1/interaction", y14)
+                        t5 = 0
+                    else:
+                        t5=t5+1
+                        print(t5)
+                    t, t1, t2, t3,t4, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15 = 41,41,41,41,41,41,41,41,41,41,41,41,41,41,41
                 elif dba < angle1 < dba + 5:
                     j = 30
                     while j >= 0 and u == 0:
@@ -199,8 +239,12 @@ while True:
                             data = json.load(f)
                             x = data[15]
                             y15 = json.dumps(x)
-                            client.publish("ebrain/vDialogEngine1/interaction", y15)
-
+                            if t6>40:
+                                client.publish("ebrain/vDialogEngine1/interaction", y15)
+                                t6 = 0
+                            else:
+                                t6=t6+1
+                            t, t1, t2, t3, t5, t4, t7, t8, t9, t10, t11, t12, t13, t14, t15 = 41,41,41,41,41,41,41,41,41,41,41,41,41,41,41
                         elif j <= 9:
 
                             cv2.putText(img, str("Ihr Helfer darf jetzt den Rest ergaenzen"), (20, 50),
@@ -210,7 +254,12 @@ while True:
                             data = json.load(f)
                             x = data[16]
                             y16 = json.dumps(x)
-                            client.publish("ebrain/DialogEngine1/interaction", y16)
+                            if t7>40:
+                                client.publish("ebrain/DialogEngine1/interaction", y16)
+                                t7 = 0
+                            else:
+                                t7=t7+1
+                            t, t1, t2, t3, t5, t6, t4, t8, t9, t10, t11, t12, t13, t14, t15 = 41,41,41,41,41,41,41,41,41,41,41,41,41,41,41
                         cv2.imshow("Image", img)
                         cv2.waitKey(125)
 
@@ -278,7 +327,13 @@ while True:
                     data = json.load(f)
                     x = data[0]
                     y0 = json.dumps(x)
-                    client.publish("ebrain/DialogEngine1/interaction", y0)
+                    if t8 >40:
+                        client.publish("ebrain/DialogEngine1/interaction", y0)
+                        t8 = 0
+                    else:
+                        t8=t8+1
+                        print(t8)
+                    t, t1, t2, t3, t5, t6, t7, t4,t9,t10,t11,t12,t13,t14,t15 = 41,41,41,41,41,41,41,41,41,41,41,41,41,41,41
                 elif angle < 65:
                     # img = cv2.applyColorMap(img, cv2.COLORMAP_DEEPGREEN)
                     cv2.putText(img, str("Bitte bewege deine rechte Hand nach oben"), (20, 50),
@@ -289,7 +344,13 @@ while True:
                     data = json.load(f)
                     x = data[1]
                     y1 = json.dumps(x)
-                    client.publish("ebrain/DialogEngine1/interaction", y1)
+                    if t9>40:
+                        client.publish("ebrain/DialogEngine1/interaction", y1)
+                        t9 = 0
+                    else:
+                        t9=t9+1
+                        print(t9)
+                    t, t1, t2, t3, t5, t6, t7, t4, t8, t10, t11, t12, t13, t14, t15 = 41,41,41,41,41,41,41,41,41,41,41,41,41,41,41
                 elif 65 < angle < 70:
                     # img = cv2.applyColorMap(img, cv2.COLORMAP_DEEPGREEN)
                     cv2.putText(img, str("und noch etwas weiter"), (20, 50),
@@ -300,7 +361,13 @@ while True:
                     data = json.load(f)
                     x = data[2]
                     y2 = json.dumps(x)
-                    client.publish("ebrain/DialogEngine1/interaction", y2)
+                    if t10:
+                        client.publish("ebrain/DialogEngine1/interaction", y2)
+                        t10 = 0
+                    else:
+                        t10=t10+1
+                        print(t10)
+                    t, t1, t2, t3, t5, t6, t7, t4, t9, t8, t11, t12, t13, t14, t15 = 41,41,41,41,41,41,41,41,41,41,41,41,41,41,41
                 else:
                     cv2.putText(img, str("einen Moment da bleiben und dabei entspannen"), (20, 50),
                                 cv2.FONT_HERSHEY_PLAIN,
@@ -310,7 +377,13 @@ while True:
                     data = json.load(f)
                     x = data[3]
                     y3 = json.dumps(x)
-                    client.publish("ebrain/DialogEngine1/interaction", y3)
+                    if t11>40:
+                        client.publish("ebrain/DialogEngine1/interaction", y3)
+                        t11 = 0
+                    else:
+                        t11=t11+1
+                        print(t11)
+                    t, t1, t2, t3, t5, t6, t7, t4, t9, t10, t8, t12, t13, t14, t15 = 41,41,41,41,41,41,41,41,41,41,41,41,41,41,41
             # ///////////Wenn der Patient nicht alleine trainieren kann///////////
             else:
                 if angle > 75:
@@ -323,7 +396,13 @@ while True:
                     data = json.load(f)
                     x = data[13]
                     y13 = json.dumps(x)
-                    client.publish("ebrain/DialogEngine1/interaction", y13)
+                    if t12>40:
+                        client.publish("ebrain/DialogEngine1/interaction", y13)
+                        t12=0
+                    else:
+                        t12=t12+1
+                        print(t12)
+                    t, t1, t2, t3, t5, t6, t7, t4, t9, t10, t11, t8, t13, t14, t15 = 41,41,41,41,41,41,41,41,41,41,41,41,41,41,41
                 elif dba - 5 < angle < dba:
                     # img = cv2.applyColorMap(img, cv2.COLORMAP_DEEPGREEN)
                     cv2.putText(img, str("und noch etwas weiter"), (20, 50),
@@ -335,7 +414,13 @@ while True:
                     data = json.load(f)
                     x = data[14]
                     y14 = json.dumps(x)
-                    client.publish("ebrain/DialogEngine1/interaction", y14)
+                    if t13>40:
+                        client.publish("ebrain/DialogEngine1/interaction", y14)
+                        t13 = 0
+                    else:
+                        t13=t13+1
+                        print(t13)
+                    t, t1, t2, t3, t5, t6, t7, t4, t9, t10, t11, t12, t8, t14, t15 = 41,41,41,41,41,41,41,41,41,41,41,41,41,41,41
                 elif dba < angle < dba + 5:
                     j = 30
                     while j >= 0 and u == 0:
@@ -352,7 +437,13 @@ while True:
                             data = json.load(f)
                             x = data[15]
                             y15 = json.dumps(x)
-                            client.publish("ebrain/vDialogEngine1/interaction", y15)
+                            if t14>40:
+                                client.publish("ebrain/vDialogEngine1/interaction", y15)
+                                t14 = 0
+                            else:
+                                t14=t14+1
+                                print(t14)
+                            t, t1, t2, t3, t5, t6, t7, t4, t9, t10, t11, t12, t13, t8, t15 = 41,41,41,41,41,41,41,41,41,41,41,41,41,41,41
 
                         elif j <= 9:
 
@@ -363,7 +454,13 @@ while True:
                             data = json.load(f)
                             x = data[16]
                             y16 = json.dumps(x)
-                            client.publish("ebrain/DialogEngine1/interaction", y16)
+                            if t15>40:
+                                client.publish("ebrain/DialogEngine1/interaction", y16)
+                                t15 = 0
+                            else:
+                                t15=t15+1
+                                print(t15)
+                            t, t1, t2, t3, t5, t6, t7, t4, t9, t10, t11, t12, t13, t14, t8 = 41,41,41,41,41,41,41,41,41,41,41,41,41,41,41
                         cv2.imshow("Image", img)
                         cv2.waitKey(125)
 
@@ -391,7 +488,7 @@ while True:
             # x = data[18]
             # y18 = json.dumps(x)
             # client.publish("ebrain/DialogEngine1/interaction", y18)
-            print(difference1)
+            print(difference)
 
         else:
 
