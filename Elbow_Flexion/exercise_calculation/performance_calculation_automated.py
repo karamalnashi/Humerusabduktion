@@ -33,9 +33,9 @@ db = 1  # aktuellem Datenbankeintrag / 1 , 0.75, 0.5 , 0,25
 arm=0 # linke-Arm =0 , rechte-Arm
 
 # ###################    MQTT Connect  ##################################################
-broker_address = "l51d159d-internet-facing-6e9635f0905aed75.elb.us-east-1.amazonaws.com"
+broker_address = "localhost"
 port = 1883
-user = "test"
+user = "mqtt"
 password = "test"
 
 def on_connect(client, userdata, flags, rc):
@@ -196,7 +196,7 @@ while True:
                     cv2.imshow("Image", img)
                     f = open('data.json')
                     data = json.load(f)
-                    x = data[13]
+                    x = data[8]
                     y13 = json.dumps(x)
                     if t4>40:
                         client.publish("ebrain/DialogEngine1/interaction", y13)
@@ -286,7 +286,7 @@ while True:
             cv2.imshow("Image", img)
             f = open('data.json')
             # data = json.load(f)
-            # x = data[18]
+            # x = data[17]
             # y18 = json.dumps(x)
             # client.publish("ebrain/DialogEngine1/interaction", y18)
             print(difference1)
@@ -388,7 +388,7 @@ while True:
             else:
                 if angle > 75:
                     img = cv2.applyColorMap(img, cv2.COLORMAP_HOT)
-                    cv2.putText(img, str("Bitte bewege deine linke Hand nach unten"), (20, 50),
+                    cv2.putText(img, str("Bitte bewege deine rechte Hand nach unten"), (20, 50),
                                 cv2.FONT_HERSHEY_PLAIN, 3,
                                 (255, 0, 0), 3)
                     cv2.imshow("Image", img)
