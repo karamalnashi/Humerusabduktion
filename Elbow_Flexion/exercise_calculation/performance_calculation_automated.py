@@ -30,9 +30,10 @@ dir = 0
 dir1 = 0
 pTime = 0
 x = 0
+back= 0
 t,t1,t2,t3,t4,t5,t6,t7,t8, t9, t10, t11, t12, t13, t14, t15 = 100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100
 z = 1
-db = 1  # aktuellem Datenbankeintrag / 1 , 0.75, 0.5 , 0,25
+db = 0.5 # aktuellem Datenbankeintrag / 1 , 0.75, 0.5 , 0,25
 arm=1 # linke-Arm =0 , rechte-Arm
 
 # ###################    MQTT Connect  ##################################################
@@ -145,26 +146,40 @@ while True:
                         t=t+1
                         print(t)
                     t1,t2,t3,t4,t5,t6,t7,t8, t9, t10, t11, t12, t13, t14, t15 = 100,100,100,100,100,100,100,100,100,100,100,100,100,100,100
+                    back = 1
 
-                elif angle1 < 65:
 
-                    # img = cv2.applyColorMap(img, cv2.COLORMAP_DEEPGREEN)
-                    cv2.putText(img, str("Bitte bewege deine linke Hand nach oben"), (20, 50),
-                                cv2.FONT_HERSHEY_PLAIN, 3,
-                                (255, 0, 0), 3)
-                    cv2.imshow("Image", img)
-                    f = open('data.json')
-                    data = json.load(f)
-                    x = data[5]
-                    y5 = json.dumps(x)
-                    if t1>99:
-                        client.publish("ebrain/DialogEngine1/interaction", y5)
-                        t1 = 0
-                    else:
-                        t1=t1+1
-                        print(t1)
-                    t,t2,t3,t4,t5,t6,t7,t8, t9, t10, t11, t12, t13, t14, t15 = 100,100,100,100,100,100,100,100,100,100,100,100,100,100,100
-                elif 65 < angle1 < 70:
+                elif angle1 < 65 :
+                    if angle1 <25 and back ==1:
+                        cv2.putText(img, str("Danke"), (20, 50),
+                                    cv2.FONT_HERSHEY_PLAIN, 3,
+                                    (255, 0, 0), 3)
+                        f = open('data.json')
+                        data = json.load(f)
+                        x = data[18]
+                        y18 = json.dumps(x)
+                        client.publish("ebrain/DialogEngine1/interaction", y18)
+                        cv2.imshow("Image", img)
+                        back =0
+                    elif angle1 <65 and back==0:
+                        # img = cv2.applyColorMap(img, cv2.COLORMAP_DEEPGREEN)
+                        cv2.putText(img, str("Bitte bewege deine linke Hand nach oben"), (20, 50),
+                                    cv2.FONT_HERSHEY_PLAIN, 3,
+                                    (255, 0, 0), 3)
+                        cv2.imshow("Image", img)
+                        f = open('data.json')
+                        data = json.load(f)
+                        x = data[5]
+                        y5 = json.dumps(x)
+                        if t1 > 99:
+                            client.publish("ebrain/DialogEngine1/interaction", y5)
+                            t1 = 0
+                        else:
+                            t1 = t1 + 1
+                            print(t1)
+                        t, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15 = 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100
+
+                elif 65 < angle1 < 70 and back ==0:
                     # img = cv2.applyColorMap(img, cv2.COLORMAP_DEEPGREEN)
                     cv2.putText(img, str("und noch etwas weiter"), (20, 50),
                                 cv2.FONT_HERSHEY_PLAIN, 3,
@@ -181,7 +196,7 @@ while True:
                         t2 = t2 + 1
                         print(t2)
                     t,t1,t3,t4,t5,t6,t7,t8, t9, t10, t11, t12, t13, t14, t15 = 100,100,100,100,100,100,100,100,100,100,100,100,100,100,100
-                else:
+                elif 70 < angle1 <= 75 and  back == 0:
                     cv2.putText(img, str("noch einen Moment da bleiben und dabei entspannen"), (20, 50),
                                 cv2.FONT_HERSHEY_PLAIN,
                                 3, (255, 0, 0), 3)
@@ -197,10 +212,34 @@ while True:
                         t3=t3+1
                         print(t3)
                     t,t1,t2,t4,t5,t6,t7,t8, t9, t10, t11, t12, t13, t14, t15 = 100,100,100,100,100,100,100,100,100,100,100,100,100,100,100
+                    back=1
 
             # ///////////Wenn der Patient nicht alleine trainieren kann///////////
             else:
-                if angle1 > 75:
+                if angle1 < 25:
+                    if back == 1:
+                        cv2.putText(img, str("Danke"), (20, 50),
+                                    cv2.FONT_HERSHEY_PLAIN, 3,
+                                    (255, 0, 0), 3)
+                        f = open('data.json')
+                        data = json.load(f)
+                        x = data[18]
+                        y18 = json.dumps(x)
+                        client.publish("ebrain/DialogEngine1/interaction", y18)
+                        cv2.imshow("Image", img)
+                        back = 0
+                    else:
+                        cv2.putText(img, str("Bitte bewege deine linke Hand nach oben"), (20, 50),
+                                    cv2.FONT_HERSHEY_PLAIN, 3,
+                                    (255, 0, 0), 3)
+                        cv2.imshow("Image", img)
+                        f = open('data.json')
+                        data = json.load(f)
+                        x = data[5]
+                        y5 = json.dumps(x)
+                        client.publish("ebrain/DialogEngine1/interaction", y5)
+
+                elif angle1 > 70:
                     img = cv2.applyColorMap(img, cv2.COLORMAP_HOT)
                     cv2.putText(img, str("Bitte bewege deine linke Hand nach unten"), (20, 50),
                                 cv2.FONT_HERSHEY_PLAIN, 3,
@@ -217,7 +256,8 @@ while True:
                         t4=t4+1
                         print(t4)
                     t,t1,t2,t3,t5,t6,t7,t8, t9, t10, t11, t12, t13, t14, t15 = 100,100,100,100,100,100,100,100,100,100,100,100,100,100,100
-                elif dba - 5 < angle1 < dba:
+                    back=1
+                elif dba - 5 < angle1 < dba and back ==0:
                     # img = cv2.applyColorMap(img, cv2.COLORMAP_DEEPGREEN)
                     cv2.putText(img, str("und noch etwas weiter"), (20, 50),
                                 cv2.FONT_HERSHEY_PLAIN, 3,
@@ -235,7 +275,7 @@ while True:
                         t5=t5+1
                         print(t5)
                     t, t1, t2, t3,t4, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15 = 100,100,100,100,100,100,100,100,100,100,100,100,100,100,100
-                elif dba < angle1 < dba + 5:
+                elif dba < angle1 < dba + 5 and back ==0:
                     j = 30
                     while j >= 0 and u == 0:
                         ret, img = cap.read()
@@ -346,23 +386,39 @@ while True:
                         t8=t8+1
                         print(t8)
                     t, t1, t2, t3, t5, t6, t7, t4,t9,t10,t11,t12,t13,t14,t15 = 100,100,100,100,100,100,100,100,100,100,100,100,100,100,100
+                    back = 1
+
                 elif angle < 65:
-                    # img = cv2.applyColorMap(img, cv2.COLORMAP_DEEPGREEN)
-                    cv2.putText(img, str("Bitte bewege deine rechte Hand nach oben"), (20, 50),
-                                cv2.FONT_HERSHEY_PLAIN, 3,
-                                (255, 0, 0), 3)
-                    cv2.imshow("Image", img)
-                    f = open('data.json')
-                    data = json.load(f)
-                    x = data[1]
-                    y1 = json.dumps(x)
-                    if t9>99:
-                        client.publish("ebrain/DialogEngine1/interaction", y1)
-                        t9 = 0
-                    else:
-                        t9=t9+1
-                        print(t9)
-                    t, t1, t2, t3, t5, t6, t7, t4, t8, t10, t11, t12, t13, t14, t15 = 100,100,100,100,100,100,100,100,100,100,100,100,100,100,100
+                    if angle < 25 and back==1:
+                        cv2.putText(img, str("Danke"), (20, 50),
+                                    cv2.FONT_HERSHEY_PLAIN, 3,
+                                    (255, 0, 0), 3)
+                        f = open('data.json')
+                        data = json.load(f)
+                        x = data[18]
+                        y18 = json.dumps(x)
+                        client.publish("ebrain/DialogEngine1/interaction", y18)
+                        cv2.imshow("Image", img)
+                        back = 0
+                    elif angle1 < 65 and back == 0:
+                        # img = cv2.applyColorMap(img, cv2.COLORMAP_DEEPGREEN)
+                        cv2.putText(img, str("Bitte bewege deine rechte Hand nach oben"), (20, 50),
+                                    cv2.FONT_HERSHEY_PLAIN, 3,
+                                    (255, 0, 0), 3)
+                        cv2.imshow("Image", img)
+                        f = open('data.json')
+                        data = json.load(f)
+                        x = data[1]
+                        y1 = json.dumps(x)
+                        if t9 > 99:
+                            client.publish("ebrain/DialogEngine1/interaction", y1)
+                            t9 = 0
+                        else:
+                            t9 = t9 + 1
+                            print(t9)
+                        t, t1, t2, t3, t5, t6, t7, t4, t8, t10, t11, t12, t13, t14, t15 = 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100
+
+
                 elif 65 < angle < 70:
                     # img = cv2.applyColorMap(img, cv2.COLORMAP_DEEPGREEN)
                     cv2.putText(img, str("und noch etwas weiter"), (20, 50),
@@ -396,9 +452,34 @@ while True:
                         t11=t11+1
                         print(t11)
                     t, t1, t2, t3, t5, t6, t7, t4, t9, t10, t8, t12, t13, t14, t15 = 100,100,100,100,100,100,100,100,100,100,100,100,100,100,100
+                    back = 1
+
             # ///////////Wenn der Patient nicht alleine trainieren kann///////////
             else:
-                if angle > 75:
+                if angle <25:
+                    if back ==1:
+                        cv2.putText(img, str("Danke"), (20, 50),
+                                    cv2.FONT_HERSHEY_PLAIN, 3,
+                                    (255, 0, 0), 3)
+                        f = open('data.json')
+                        data = json.load(f)
+                        x = data[18]
+                        y18 = json.dumps(x)
+                        client.publish("ebrain/DialogEngine1/interaction", y18)
+                        cv2.imshow("Image", img)
+                        back = 0
+                    else:
+                        cv2.putText(img, str("Bitte bewege deine rechte Hand nach oben"), (20, 50),
+                                    cv2.FONT_HERSHEY_PLAIN, 3,
+                                    (255, 0, 0), 3)
+                        cv2.imshow("Image", img)
+                        f = open('data.json')
+                        data = json.load(f)
+                        x = data[1]
+                        y1 = json.dumps(x)
+                        client.publish("ebrain/DialogEngine1/interaction", y1)
+
+                elif angle > 70:
                     img = cv2.applyColorMap(img, cv2.COLORMAP_HOT)
                     cv2.putText(img, str("Bitte bewege deine rechte Hand nach unten"), (20, 50),
                                 cv2.FONT_HERSHEY_PLAIN, 3,
@@ -415,7 +496,8 @@ while True:
                         t12=t12+1
                         print(t12)
                     t, t1, t2, t3, t5, t6, t7, t4, t9, t10, t11, t8, t13, t14, t15 = 100,100,100,100,100,100,100,100,100,100,100,100,100,100,100
-                elif dba - 5 < angle < dba:
+                    back =1
+                elif dba - 5 < angle < dba and back==0:
                     # img = cv2.applyColorMap(img, cv2.COLORMAP_DEEPGREEN)
                     cv2.putText(img, str("und noch etwas weiter"), (20, 50),
                                 cv2.FONT_HERSHEY_PLAIN, 3,
@@ -433,7 +515,7 @@ while True:
                         t13=t13+1
                         print(t13)
                     t, t1, t2, t3, t5, t6, t7, t4, t9, t10, t11, t12, t8, t14, t15 = 100,100,100,100,100,100,100,100,100,100,100,100,100,100,100
-                elif dba < angle < dba + 5:
+                elif dba < angle < dba + 5 and back==0:
                     j = 30
                     while j >= 0 and u == 0:
                         ret, img = cap.read()
