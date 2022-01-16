@@ -49,7 +49,7 @@ class poseDetector():
 	def findAngle(self, img, p1, p2, p3, draw=True):
  
 		# Get the landmarks
-		x1, y1,z1 = self.lmList[p1][1:]
+		x1, y1, z1 = self.lmList[p1][1:]
 		x2, y2,z2 = self.lmList[p2][1:]
 		#x3, y3,z3 = self.lmList[p3][1:]
 		cx3, cy3,cz3 = self.lmList[p3][1:]
@@ -122,4 +122,5 @@ def main():
  
 if __name__ == "__main__":
 	main()
+
 
