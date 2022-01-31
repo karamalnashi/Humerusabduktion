@@ -67,7 +67,7 @@ class poseDetector():
 								 math.atan2(y3 - y2, x3 - x2))
 		else:
 			# # Left Arm
-			x3, y3, z3 = ((x2 + cx3) // 2) + 20, (y2 + cy3) // 2, (z2 + cz3) // 2
+			x3, y3, z3 = ((x2 + cx3) // 2) + 30, (y2 + cy3) // 2, (z2 + cz3) // 2
 			angle = math.degrees(math.atan2(y3 - y2, x3 - x2) -
 							 math.atan2(y1 - y2, x1 - x2))
 		if angle < 0:

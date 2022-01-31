@@ -34,7 +34,7 @@ back= 0
 t,t1,t2,t3,t4,t5,t6,t7,t8, t9, t10, t11, t12, t13, t14, t15 = 100,100,100,100,100,100,100,100,100,100,100,100,100,100,100,100
 z = 1
 db = 1 # aktuellem Datenbankeintrag / 1 , 0.75, 0.5 , 0,25
-arm=0 # linke-Arm =0 , rechte-Arm
+arm=1 # linke-Arm =0 , rechte-Arm
 
 # ###################    MQTT Connect  ##################################################
 broker_address = "localhost"
@@ -83,13 +83,12 @@ while True:
     # img = cv2.imread("AiTrainer/test.jpg")
     img = detector.findPose(img, False)
     lmList = detector.findPosition(img, False)
+
     x1= lmList[15][1]
     x2= lmList[16][1]
-    #print(x1)
-    #print(x2)
-
     if x1>= x2>= x1-100:
         time.sleep(3)
+
         while True:
             # time.sleep(4)
             success, img = cap.read()
@@ -97,14 +96,15 @@ while True:
             # img = cv2.imread("AiTrainer/test.jpg")
             img = detector.findPose(img, False)
             lmList = detector.findPosition(img, False)
+            ############### run-stop
             x1 = lmList[15][1]
             x2 = lmList[16][1]
-            # print(x1)
-            # print(x2)
             if x1 >= x2 >= x1 - 100:
                 time.sleep(3)
                 break
             print("gooooo")
+            ############### run-stop (end)
+
             f = open(r"../precalibration/test1.txt", "r")
             minimum = min(f)
             value_min = int(minimum.replace(',', ''))
@@ -128,11 +128,6 @@ while True:
             # ######################  linke-arm  #################################
             if arm == 0:
                 if len(lmList) != 0:
-                    test = lmList[15]
-                    if test:
-                        print(",,,,,,,")
-                    else:
-                        print("error")
                     # # Left Arm
                     angle1, difference1 = detector.findAngle(img, 13, 11, 23)
 
@@ -426,7 +421,7 @@ while True:
                                 client.publish("ebrain/DialogEngine1/interaction", y18)
                                 cv2.imshow("Image", img)
                                 back = 0
-                            elif angle1 < 65 and back == 0:
+                            elif angle < 65 and back == 0:
                                 # img = cv2.applyColorMap(img, cv2.COLORMAP_DEEPGREEN)
                                 cv2.putText(img, str("Bitte bewege deine rechte Hand nach oben"), (20, 50),
                                             cv2.FONT_HERSHEY_PLAIN, 3,
@@ -445,7 +440,7 @@ while True:
                                 t, t1, t2, t3, t5, t6, t7, t4, t8, t10, t11, t12, t13, t14, t15 = 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100
 
 
-                        elif 65 < angle < 70:
+                        elif 65 < angle < 70 and back==0:
                             # img = cv2.applyColorMap(img, cv2.COLORMAP_DEEPGREEN)
                             cv2.putText(img, str("und noch etwas weiter"), (20, 50),
                                         cv2.FONT_HERSHEY_PLAIN, 3,
@@ -615,7 +610,7 @@ while True:
                 else:
 
                     cv2.imshow("Image", img)
-            start = 1
+
             cv2.waitKey(1)
 
 
@@ -623,9 +618,6 @@ while True:
 
     else:
         print("stopp")
-
-    ##  Read text file
-    # Minimum value
 
 # if cv2.waitKey(1) & 0xFF == ord('q'):
 # break
