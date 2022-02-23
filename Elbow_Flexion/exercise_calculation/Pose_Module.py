@@ -19,12 +19,36 @@ class poseDetector():
 		self.smooth = smooth
 		self.detectionCon = detectionCon
 		self.trackCon = trackCon
- 
+
 		self.mpDraw = mp.solutions.drawing_utils
 		self.mpPose = mp.solutions.pose
 		self.pose = self.mpPose.Pose(self.mode, self.upBody, self.smooth,
 									 self.detectionCon, self.trackCon)
- 
+
+
+
+	def findPerson(self,image):
+		mp_drawing = mp.solutions.drawing_utils
+		mp_holistic = mp.solutions.holistic
+
+		with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=0.5) as holistic:
+
+				results = holistic.process(image)
+				# Draw landmark annotation on the image.
+
+				#image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+				#mp_drawing.draw_landmarks(image, results.pose_landmarks, mp_holistic.POSE_CONNECTIONS)
+				print(results.pose_landmarks)
+				if results.pose_landmarks!=None:
+					result= True
+				else:
+					result=False
+
+				#cv2.imshow('MediaPipe Holistic', image)
+
+		return result
+
+
 	def findPose(self, img, draw=True):
 		imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 		self.results = self.pose.process(imgRGB)

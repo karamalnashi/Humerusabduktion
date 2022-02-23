@@ -1,3 +1,4 @@
+import json
 import cv2
 import numpy as np
 import pyttsx3
@@ -25,83 +26,9 @@ port = 1883
 user = "mqtt"
 password = "test"
 
-
-class Run:
-
-
-        def __init__(self,mqtt_start: bool = True):
-            super(Run, self).__init__()
-            self.person_dec=self.person_dec
-            self.on_message=self.on_message()
-            self.star=self.start
-            self.client=self.client
-            self.on_connect=self.on_connect
-            self.convert=self.convert
-
-
-
-        def person_dec(self):
-            cap = cv2.VideoCapture(0)
-            while True:
-                success, img = cap.read()
-                img = cv2.resize(img, (1280, 720))
-                # img = cv2.imread("AiTrainer/test.jpg")
-                result = detector.findPerson(img)
-                print(result)
-                if result == True:
-                    break
-            return result
-
-        def on_connect(self,client, userdata, flags, rc):
-
-            if rc == 0:
-                print("client is connected")
-                global connected
-                connected = True
-            else:
-                print("client is error")
-
-
-        def on_message(self, client, userdata, message):
-            print("message recieved = " + str(message.payload.decode("utf-8")))
-            print("message topic=", message.topic)
-
-            if message.topic == "ebrain/start":
-                person_result = self.person_dec()
-                if person_result == True:
-                    print("okkkkkkkkkkkkk")
-                    f = open('data.json')
-                    data = json.load(f)
-                    x = data[19]
-                    y = json.dumps(x)
-                    client.publish("ebrain/DialogEngine1/interaction", y)
-                    # pass
-                    # time.sleep(4)
-                    # startStope.start(message.topic)
-                    # startStope.start(message.topic)
-                else:
-                    print("neiiiiiiiiiin")
-
-
-            elif message.topic == "ebrain/ja":
-                self.start(message.topic)
-
-            elif message.topic == "ebrain/DialogEngine1/interaction":
-                print(message.topic)
-                print("uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu")
-
-        Messagerecieved = False
-        connected = False
-        client = mqttclient.Client("MQTT")
-        client.on_message = on_message
-        client.username_pw_set(user, password=password)
-        client.on_connect = on_connect
-        client.connect(broker_address, port=port)
-        client.loop_start()
-        client.subscribe("ebrain/#")
-
-
-
+class testR():
+    #class StartStope():
+    ################################ mqtt##########################
 
         cap = cv2.VideoCapture(0)  # capture by your own camera
         path_current = os.path.abspath(os.getcwd())
@@ -110,7 +37,12 @@ class Run:
         frameeHeight = framee.shape[0]
         os.path.abspath(os.getcwd())
 
-        def convert(self, data1):
+
+
+
+        ############################################################################################
+
+        def convert(data1):
             data = json.loads(data1)
             say = data["content"]["say"]
             print(say)
@@ -118,47 +50,60 @@ class Run:
             text_speech.say(say)
             text_speech.runAndWait()
 
+        def person_dec(self):
+            cap = cv2.VideoCapture(0)
+            while True:
 
-        def start(self,status):
+                success, img = cap.read()
+                img = cv2.resize(img, (1280, 720))
+                # img = cv2.imread("AiTrainer/test.jpg")
+                result = detector.findPerson(img)
+                print(result)
+                img = detector.findPose(img, False)
+                #lmList = detector.findPosition(img, False)
+                if result==True:
+                    break
+            #print("dfgdf")
+            return result
+
+        def start(self):
             count, count1, dir, dir1, pTime, back, x, z = 0, 0, 0, 0, 0, 0, 0, 1
             t, t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15 = 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100
             cap = cv2.VideoCapture(0)
-            y=status
+            def convert(data1):
+                data = json.loads(data1)
+                say = data["content"]["say"]
+                print(say)
+                text_speech = pyttsx3.init()
+                text_speech.say(say)
+                text_speech.runAndWait()
 
-            #def convert(data1):
-                #data = json.loads(data1)
-                #say = data["content"]["say"]
-                #print(say)
-                #text_speech = pyttsx3.init()
-                #text_speech.say(say)
-                #text_speech.runAndWait()
+            def on_connect(client, userdata, flags, rc):
+                if rc == 0:
+                    print("client is connected")
+                    global connected
+                    connected = True
+                else:
+                    print("client is error")
 
-            #def on_connect(client, userdata, flags, rc):
-                #if rc == 0:
-                    #print("client is connected")
-                    #global connected
-                    #connected = True
-                #else:
-                    #print("client is error")
-
-            #def on_message(client, userdata, message):
-                #print("message recieved = " + str(message.payload.decode("utf-8")))
-                #print("message topic=", message.topic)
-                #msg=message.payload.decode("utf-8")
-                #convert(msg)
+            def on_message(client, userdata, message):
+                print("message recieved = " + str(message.payload.decode("utf-8")))
+                print("message topic=", message.topic)
+                convert(message.payload.decode("utf-8"))
 
             Messagerecieved = False
-            #connected = False
-            #client = mqttclient.Client("MQTT")
-            #client.on_message = on_message
-            #client.username_pw_set(user, password=password)
-            #client.on_connect = on_connect
-            #client.connect(broker_address, port=port)
+            connected = False
+            client = mqttclient.Client("MQTT")
+            client.on_message = on_message
+            client.username_pw_set(user, password=password)
+            client.on_connect = on_connect
+            client.connect(broker_address, port=port)
 
-            #client.loop_start()
-            #client.subscribe("ebrain/#")
+            client.loop_start()
+            client.subscribe("ebrain/#")
 
-            while y !="ebrain/end":
+            while True:
+
                 success, img = cap.read()
                 img = cv2.resize(img, (1280, 720))
                 # img = cv2.imread("AiTrainer/test.jpg")
@@ -218,7 +163,7 @@ class Run:
                                 x = data[4]
                                 y4 = json.dumps(x)
                                 if t > 99:
-                                    self.client.publish("ebrain/DialogEngine1/interaction", y4)
+                                    client.publish("ebrain/DialogEngine1/interaction", y4)
                                     t = 0
                                 else:
                                     t = t + 1
@@ -236,7 +181,7 @@ class Run:
                                     data = json.load(f)
                                     x = data[18]
                                     y18 = json.dumps(x)
-                                    self.client.publish("ebrain/DialogEngine1/interaction", y18)
+                                    client.publish("ebrain/DialogEngine1/interaction", y18)
                                     cv2.imshow("Image", img)
                                     back = 0
                                 elif angle1 < 65 and back == 0:
@@ -250,7 +195,7 @@ class Run:
                                     x = data[5]
                                     y5 = json.dumps(x)
                                     if t1 > 99:
-                                        self.client.publish("ebrain/DialogEngine1/interaction", y5)
+                                        client.publish("ebrain/DialogEngine1/interaction", y5)
                                         t1 = 0
                                     else:
                                         t1 = t1 + 1
@@ -268,7 +213,7 @@ class Run:
                                 x = data[6]
                                 y6 = json.dumps(x)
                                 if t2 > 99:
-                                    self.client.publish("ebrain/DialogEngine1/interaction", y6)
+                                    client.publish("ebrain/DialogEngine1/interaction", y6)
                                     t2 = 0
                                 else:
                                     t2 = t2 + 1
@@ -284,7 +229,7 @@ class Run:
                                 x = data[7]
                                 y7 = json.dumps(x)
                                 if t3 > 99:
-                                    self.client.publish("ebrain/DialogEngine1/interaction", y7)
+                                    client.publish("ebrain/DialogEngine1/interaction", y7)
                                     t3 = 0
                                 else:
                                     t3 = t3 + 1
@@ -303,7 +248,7 @@ class Run:
                                     data = json.load(f)
                                     x = data[18]
                                     y18 = json.dumps(x)
-                                    self.client.publish("ebrain/DialogEngine1/interaction", y18)
+                                    client.publish("ebrain/DialogEngine1/interaction", y18)
                                     cv2.imshow("Image", img)
                                     back = 0
                                 else:
@@ -315,7 +260,7 @@ class Run:
                                     data = json.load(f)
                                     x = data[5]
                                     y5 = json.dumps(x)
-                                    self.client.publish("ebrain/DialogEngine1/interaction", y5)
+                                    client.publish("ebrain/DialogEngine1/interaction", y5)
 
                             elif angle1 > 70:
                                 img = cv2.applyColorMap(img, cv2.COLORMAP_HOT)
@@ -328,7 +273,7 @@ class Run:
                                 x = data[8]
                                 y13 = json.dumps(x)
                                 if t4 > 99:
-                                    self.client.publish("ebrain/DialogEngine1/interaction", y13)
+                                    client.publish("ebrain/DialogEngine1/interaction", y13)
                                     t4 = 0
                                 else:
                                     t4 = t4 + 1
@@ -347,7 +292,7 @@ class Run:
                                 x = data[14]
                                 y14 = json.dumps(x)
                                 if t5 > 99:
-                                    self.client.publish("ebrain/DialogEngine1/interaction", y14)
+                                    client.publish("ebrain/DialogEngine1/interaction", y14)
                                     t5 = 0
                                 else:
                                     t5 = t5 + 1
@@ -372,7 +317,7 @@ class Run:
                                         x = data[15]
                                         y15 = json.dumps(x)
                                         if t6 > 99:
-                                            self.client.publish("ebrain/vDialogEngine1/interaction", y15)
+                                            client.publish("ebrain/vDialogEngine1/interaction", y15)
                                             t6 = 0
                                         else:
                                             t6 = t6 + 1
@@ -387,7 +332,7 @@ class Run:
                                         x = data[16]
                                         y16 = json.dumps(x)
                                         if t7 > 99:
-                                            self.client.publish("ebrain/DialogEngine1/interaction", y16)
+                                            client.publish("ebrain/DialogEngine1/interaction", y16)
                                             t7 = 0
                                         else:
                                             t7 = t7 + 1
@@ -460,7 +405,7 @@ class Run:
                                 x = data[0]
                                 y0 = json.dumps(x)
                                 if t8 > 99:
-                                    self.client.publish("ebrain/DialogEngine1/interaction", y0)
+                                    client.publish("ebrain/DialogEngine1/interaction", y0)
                                     t8 = 0
                                 else:
                                     t8 = t8 + 1
@@ -477,7 +422,7 @@ class Run:
                                     data = json.load(f)
                                     x = data[18]
                                     y18 = json.dumps(x)
-                                    self.client.publish("ebrain/DialogEngine1/interaction", y18)
+                                    client.publish("ebrain/DialogEngine1/interaction", y18)
                                     cv2.imshow("Image", img)
                                     back = 0
                                 elif angle < 65 and back == 0:
@@ -491,7 +436,7 @@ class Run:
                                     x = data[1]
                                     y1 = json.dumps(x)
                                     if t9 > 99:
-                                        self.client.publish("ebrain/DialogEngine1/interaction", y1)
+                                        client.publish("ebrain/DialogEngine1/interaction", y1)
                                         t9 = 0
                                     else:
                                         t9 = t9 + 1
@@ -510,7 +455,7 @@ class Run:
                                 x = data[2]
                                 y2 = json.dumps(x)
                                 if t10 > 99:
-                                    self.client.publish("ebrain/DialogEngine1/interaction", y2)
+                                    client.publish("ebrain/DialogEngine1/interaction", y2)
                                     t10 = 0
                                 else:
                                     t10 = t10 + 1
@@ -526,7 +471,7 @@ class Run:
                                 x = data[3]
                                 y3 = json.dumps(x)
                                 if t11 > 99:
-                                    self.client.publish("ebrain/DialogEngine1/interaction", y3)
+                                    client.publish("ebrain/DialogEngine1/interaction", y3)
                                     t11 = 0
                                 else:
                                     t11 = t11 + 1
@@ -545,7 +490,7 @@ class Run:
                                     data = json.load(f)
                                     x = data[18]
                                     y18 = json.dumps(x)
-                                    self.client.publish("ebrain/DialogEngine1/interaction", y18)
+                                    client.publish("ebrain/DialogEngine1/interaction", y18)
                                     cv2.imshow("Image", img)
                                     back = 0
                                 else:
@@ -557,7 +502,7 @@ class Run:
                                     data = json.load(f)
                                     x = data[1]
                                     y1 = json.dumps(x)
-                                    self.client.publish("ebrain/DialogEngine1/interaction", y1)
+                                    client.publish("ebrain/DialogEngine1/interaction", y1)
 
                             elif angle > 70:
                                 img = cv2.applyColorMap(img, cv2.COLORMAP_HOT)
@@ -570,7 +515,7 @@ class Run:
                                 x = data[13]
                                 y13 = json.dumps(x)
                                 if t12 > 99:
-                                    self.client.publish("ebrain/DialogEngine1/interaction", y13)
+                                    client.publish("ebrain/DialogEngine1/interaction", y13)
                                     t12 = 0
                                 else:
                                     t12 = t12 + 1
@@ -589,7 +534,7 @@ class Run:
                                 x = data[14]
                                 y14 = json.dumps(x)
                                 if t13 > 99:
-                                    self.client.publish("ebrain/DialogEngine1/interaction", y14)
+                                    client.publish("ebrain/DialogEngine1/interaction", y14)
                                     t13 = 0
                                 else:
                                     t13 = t13 + 1
@@ -614,7 +559,7 @@ class Run:
                                         x = data[15]
                                         y15 = json.dumps(x)
                                         if t14 > 99:
-                                            self.client.publish("ebrain/vDialogEngine1/interaction", y15)
+                                            client.publish("ebrain/vDialogEngine1/interaction", y15)
                                             t14 = 0
                                         else:
                                             t14 = t14 + 1
@@ -631,7 +576,7 @@ class Run:
                                         x = data[16]
                                         y16 = json.dumps(x)
                                         if t15 > 99:
-                                            self.client.publish("ebrain/DialogEngine1/interaction", y16)
+                                            client.publish("ebrain/DialogEngine1/interaction", y16)
                                             t15 = 0
                                         else:
                                             t15 = t15 + 1
@@ -678,3 +623,5 @@ class Run:
         cap.release()
         cv2.destroyAllWindows()
 
+
+        print("sdlkfllllllllllll")
