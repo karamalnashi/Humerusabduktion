@@ -28,6 +28,7 @@ def on_connect(client1, userdata, flags, rc):
 
     if rc == 0:
         print("client 1 is connected")
+        client1.subscribe("ebrain/#")
         global connected
         connected = True
     else:
@@ -36,7 +37,7 @@ def on_connect(client1, userdata, flags, rc):
 
 def on_message(client1, userdata, message):
     print("message recieved = " + str(message.payload.decode("utf-8")))
-    print("message topic=", message.topic)
+    print("message topic 1=", message.topic)
 
     if message.topic == "ebrain/start":
 
