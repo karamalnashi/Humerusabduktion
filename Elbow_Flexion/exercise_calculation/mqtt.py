@@ -4,11 +4,11 @@ import json
 import Pose_Module as pm
 from performance_calculation_automated import Run
 
+
 broker_address = "localhost"
 port = 1883
 user = "mqtt"
 password = "test"
-run=Run()
 detector = pm.poseDetector()
 
 def person_dec():
@@ -43,7 +43,6 @@ def on_message(client1, userdata, message):
 
         person_result =person_dec()
         if person_result==True:
-            print("ok")
             f = open('data.json')
             data = json.load(f)
             x = data[19]
@@ -54,7 +53,7 @@ def on_message(client1, userdata, message):
 
 
     elif message.topic == "ebrain/ja":
-        run.start(message.topic)
+        run=Run(mqtt_start=True,def_triener=True)
 
 
     elif message.topic == "ebrain/DialogEngine1/interaction":
