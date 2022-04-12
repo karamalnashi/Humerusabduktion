@@ -1,4 +1,5 @@
-[ {
+[
+  {
                     "api_version": "v0.1.0",
                     "time": 1638367683.530698,
                     "time_hr": "2021-12-01T15:08:03.530698",
@@ -7,7 +8,7 @@
                     "message_uuid": "DialogEngine1-interaction19635f4c-52b0-11ec-956f-f8b156cd740c",
 
                     "content": {
-                        "say": "rechte Hand nach unten",
+                        "say": "Deine Hand nach oben",
                         "image": "",
                         "answers": [
                             ""
@@ -16,9 +17,8 @@
                         "layout_type": "media_1answer",
                         "stateID": "0_start"
                     }
-}
-,
-{
+},
+  {
                     "api_version": "v0.1.0",
                     "time": 1638367683.530698,
                     "time_hr": "2021-12-01T15:08:03.530698",
@@ -27,7 +27,7 @@
                     "message_uuid": "DialogEngine1-interaction19635f4c-52b0-11ec-956f-f8b156cd740c",
 
                     "content": {
-                        "say": "rechte Hand nach oben",
+                        "say": "Deine Hand nach unten",
                         "image": "",
                         "answers": [
                             ""
@@ -36,9 +36,8 @@
                         "layout_type": "media_1answer",
                         "stateID": "0_start"
                     }
-}
-  ,
-{
+},
+  {
                     "api_version": "v0.1.0",
                     "time": 1638367683.530698,
                     "time_hr": "2021-12-01T15:08:03.530698",
@@ -56,8 +55,7 @@
                         "layout_type": "media_1answer",
                         "stateID": "0_start"
                     }
-}
-  ,
+},
 {
                     "api_version": "v0.1.0",
                     "time": 1638367683.530698,
@@ -76,148 +74,8 @@
                         "layout_type": "media_1answer",
                         "stateID": "0_start"
                     }
-}
-    ,
-{
-                    "api_version": "v0.1.0",
-                    "time": 1638367683.530698,
-                    "time_hr": "2021-12-01T15:08:03.530698",
-                    "sender_CID": "DialogEngine1",
-                    "message_type": "interaction",
-                    "message_uuid": "DialogEngine1-interaction19635f4c-52b0-11ec-956f-f8b156cd740c",
+},
 
-                    "content": {
-                        "say": "linke Hand nach unten",
-                        "image": "",
-                        "answers": [
-                            ""
-                        ],
-                        "answer_topic": "ebrain/answers",
-                        "layout_type": "media_1answer",
-                        "stateID": "0_start"
-                    }
-}
-    ,
-{
-                    "api_version": "v0.1.0",
-                    "time": 1638367683.530698,
-                    "time_hr": "2021-12-01T15:08:03.530698",
-                    "sender_CID": "DialogEngine1",
-                    "message_type": "interaction",
-                    "message_uuid": "DialogEngine1-interaction19635f4c-52b0-11ec-956f-f8b156cd740c",
-
-                    "content": {
-                        "say": "linke Hand nach oben",
-                        "image": "",
-                        "answers": [
-                            ""
-                        ],
-                        "answer_topic": "ebrain/answers",
-                        "layout_type": "media_1answer",
-                        "stateID": "0_start"
-                    }
-}
-    ,
-{
-                    "api_version": "v0.1.0",
-                    "time": 1638367683.530698,
-                    "time_hr": "2021-12-01T15:08:03.530698",
-                    "sender_CID": "DialogEngine1",
-                    "message_type": "interaction",
-                    "message_uuid": "DialogEngine1-interaction19635f4c-52b0-11ec-956f-f8b156cd740c",
-
-                    "content": {
-                        "say": "und noch etwas weiter",
-                        "image": "",
-                        "answers": [
-                            ""
-                        ],
-                        "answer_topic": "ebrain/answers",
-                        "layout_type": "media_1answer",
-                        "stateID": "0_start"
-                    }
-}
-      ,
-{
-                    "api_version": "v0.1.0",
-                    "time": 1638367683.530698,
-                    "time_hr": "2021-12-01T15:08:03.530698",
-                    "sender_CID": "DialogEngine1",
-                    "message_type": "interaction",
-                    "message_uuid": "DialogEngine1-interaction19635f4c-52b0-11ec-956f-f8b156cd740c",
-
-                    "content": {
-                        "say": "noch einen Moment da bleiben und dabei entspannen",
-                        "image": "",
-                        "answers": [
-                            ""
-                        ],
-                        "answer_topic": "ebrain/answers",
-                        "layout_type": "media_1answer",
-                        "stateID": "0_start"
-                    }
-}
-      ,
-{
-                    "api_version": "v0.1.0",
-                    "time": 1638367683.530698,
-                    "time_hr": "2021-12-01T15:08:03.530698",
-                    "sender_CID": "DialogEngine1",
-                    "message_type": "interaction",
-                    "message_uuid": "DialogEngine1-interaction19635f4c-52b0-11ec-956f-f8b156cd740c",
-
-                    "content": {
-                        "say": "linke Hand nach unten",
-                        "image": "",
-                        "answers": [
-                            ""
-                        ],
-                        "answer_topic": "ebrain/answers",
-                        "layout_type": "media_1answer",
-                        "stateID": "0_start"
-                    }
-}
-      ,
-{
-                    "api_version": "v0.1.0",
-                    "time": 1638367683.530698,
-                    "time_hr": "2021-12-01T15:08:03.530698",
-                    "sender_CID": "DialogEngine1",
-                    "message_type": "interaction",
-                    "message_uuid": "DialogEngine1-interaction19635f4c-52b0-11ec-956f-f8b156cd740c",
-
-                    "content": {
-                        "say": "und noch etwas weiter",
-                        "image": "",
-                        "answers": [
-                            ""
-                        ],
-                        "answer_topic": "ebrain/answers",
-                        "layout_type": "media_1answer",
-                        "stateID": "0_start"
-                    }
-}
-        ,
-{
-                    "api_version": "v0.1.0",
-                    "time": 1638367683.530698,
-                    "time_hr": "2021-12-01T15:08:03.530698",
-                    "sender_CID": "DialogEngine1",
-                    "message_type": "interaction",
-                    "message_uuid": "DialogEngine1-interaction19635f4c-52b0-11ec-956f-f8b156cd740c",
-
-                    "content": {
-                        "say": "Gut,und noch etwas weiter",
-                        "image": "",
-                        "answers": [
-                            ""
-                        ],
-                        "answer_topic": "ebrain/answers",
-                        "layout_type": "media_1answer",
-                        "stateID": "0_start"
-                    }
-}
-        ,
 {
                     "api_version": "v0.1.0",
                     "time": 1638367683.530698,
@@ -238,66 +96,7 @@
                     }
 }
         ,
-{
-                    "api_version": "v0.1.0",
-                    "time": 1638367683.530698,
-                    "time_hr": "2021-12-01T15:08:03.530698",
-                    "sender_CID": "DialogEngine1",
-                    "message_type": "interaction",
-                    "message_uuid": "DialogEngine1-interaction19635f4c-52b0-11ec-956f-f8b156cd740c",
 
-                    "content": {
-                        "say": "linke Hand nach unten",
-                        "image": "",
-                        "answers": [
-                            ""
-                        ],
-                        "answer_topic": "ebrain/answers",
-                        "layout_type": "media_1answer",
-                        "stateID": "0_start"
-                    }
-}
-    ,
-{
-                    "api_version": "v0.1.0",
-                    "time": 1638367683.530698,
-                    "time_hr": "2021-12-01T15:08:03.530698",
-                    "sender_CID": "DialogEngine1",
-                    "message_type": "interaction",
-                    "message_uuid": "DialogEngine1-interaction19635f4c-52b0-11ec-956f-f8b156cd740c",
-
-                    "content": {
-                        "say": "rechte Hand nach unten",
-                        "image": "",
-                        "answers": [
-                            ""
-                        ],
-                        "answer_topic": "ebrain/answers",
-                        "layout_type": "media_1answer",
-                        "stateID": "0_start"
-                    }
-}
-    ,
-{
-                    "api_version": "v0.1.0",
-                    "time": 1638367683.530698,
-                    "time_hr": "2021-12-01T15:08:03.530698",
-                    "sender_CID": "DialogEngine1",
-                    "message_type": "interaction",
-                    "message_uuid": "DialogEngine1-interaction19635f4c-52b0-11ec-956f-f8b156cd740c",
-
-                    "content": {
-                        "say": "und noch etwas weiter",
-                        "image": "",
-                        "answers": [
-                            ""
-                        ],
-                        "answer_topic": "ebrain/answers",
-                        "layout_type": "media_1answer",
-                        "stateID": "0_start"
-                    }
-}
-    ,
 {
                     "api_version": "v0.1.0",
                     "time": 1638367683.530698,
@@ -318,26 +117,7 @@
                     }
 }
       ,
-{
-                    "api_version": "v0.1.0",
-                    "time": 1638367683.530698,
-                    "time_hr": "2021-12-01T15:08:03.530698",
-                    "sender_CID": "DialogEngine1",
-                    "message_type": "interaction",
-                    "message_uuid": "DialogEngine1-interaction19635f4c-52b0-11ec-956f-f8b156cd740c",
 
-                    "content": {
-                        "say": "Ihr Helfer darf jetzt den Rest ergaenzen",
-                        "image": "",
-                        "answers": [
-                            ""
-                        ],
-                        "answer_topic": "ebrain/answers",
-                        "layout_type": "media_1answer",
-                        "stateID": "0_start"
-                    }
-}
-        ,
 {
                     "api_version": "v0.1.0",
                     "time": 1638367683.530698,
@@ -404,7 +184,27 @@
                     "message_uuid": "DialogEngine1-interaction19635f4c-52b0-11ec-956f-f8b156cd740c",
 
                     "content": {
-                          "say": "Sie haben 10 Mal gemacht, die Physiotherapie ist vorbei",
+                          "say": "die Physiotherapie ist vorbei",
+                        "image": "",
+                        "answers": [
+                            ""
+                        ],
+                        "answer_topic": "ebrain/answers",
+                        "layout_type": "media_1answer",
+                        "stateID": "0_start"
+                    }
+}
+  ,
+   {
+                    "api_version": "v0.1.0",
+                    "time": 1638367683.530698,
+                    "time_hr": "2021-12-01T15:08:03.530698",
+                    "sender_CID": "DialogEngine1",
+                    "message_type": "interaction",
+                    "message_uuid": "DialogEngine1-interaction19635f4c-52b0-11ec-956f-f8b156cd740c",
+
+                    "content": {
+                          "say": "es gibt kein Person",
                         "image": "",
                         "answers": [
                             ""

@@ -2,8 +2,8 @@ import paho.mqtt.client as mqttclient
 import cv2
 import json
 import Pose_Module as pm
-from performance_calculation_automated import Run
-
+from performance_calculation_automated import trien
+#from test import trien
 
 broker_address = "localhost"
 port = 1883
@@ -45,23 +45,25 @@ def on_message(client1, userdata, message):
         if person_result==True:
             f = open('data.json')
             data = json.load(f)
-            x = data[19]
+            x = data[8]
             y = json.dumps(x)
             client1.publish("ebrain/DialogEngine1/interaction", y)
         else:
             print("es gibt kein Person")
+            f = open('data.json')
+            data = json.load(f)
+            x = data[10]
+            y = json.dumps(x)
+            client1.publish("ebrain/DialogEngine1/interaction", y)
 
 
     elif message.topic == "ebrain/ja":
-        run=Run(mqtt_start=True,def_triener=True)
+        #mqtt=Mqtt(mqtt_start=True,def_triener=True)
+        t=trien(mqtt_start=True,def_triener=True)
 
 
     elif message.topic == "ebrain/DialogEngine1/interaction":
         print(message.topic)
-
-
-
-
 
 Messagerecieved = False
 connected = False
