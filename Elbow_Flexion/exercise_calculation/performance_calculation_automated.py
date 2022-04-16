@@ -7,34 +7,28 @@ import Pose_Module as pm
 import os
 detector = pm.poseDetector()
 
-patientSituation = 1  # aktuellem Datenbankeintrag / 1 , 0.75, 0.5 , 0,25
-handSide =1  # linke-Arm =0 , rechte-Arm=1
-cap = cv2.VideoCapture(0)  # capture by your own camera
-path_current = os.path.abspath(os.getcwd())
-hasFrame, framee = cap.read()
-frameeWidth = framee.shape[1]
-frameeHeight = framee.shape[0]
-os.path.abspath(os.getcwd())
+
+
 class Mqtt():
     def __init__(self,mqtt_start: bool=False ,def_triener: bool=False, mqtt_host:str="localhost" , mqtt_port: int =1883 , mqtt_user:str="mqtt", mqtt_password:str="test",mqtt_keep_alive:int=60):
-        #super().__init__()
         self._mqtt_host=mqtt_host
         self._mqtt_port=mqtt_port
         self._mqtt_keep_alive=mqtt_keep_alive
-
         self._mqtt_cleint= mqttclient.Client("MQTT")
         self._mqtt_cleint.username_pw_set(mqtt_user, password=mqtt_password)
         self._mqtt_cleint.on_connect=self.on_connect
         self._mqtt_cleint.on_message=self.on_message
+
         self.end_While=False
         self.def_triener=def_triener
-        #start_mqtt=self.start_mqtt
-
+        self.cap = cv2.VideoCapture(0)  # capture by your own camera
+        path_current = os.path.abspath(os.getcwd())
+        hasFrame, framee = self.cap.read()
+        frameeWidth = framee.shape[1]
+        frameeHeight = framee.shape[0]
+        os.path.abspath(os.getcwd())
         if mqtt_start:
             self.start_mqtt()
-        #if def_triener:
-            #self.start_Übung()
-            #t = trien()
 
 
     def start_mqtt(self):
@@ -54,7 +48,6 @@ class Mqtt():
         self._mqtt_cleint.publish("ebrain/DialogEngine1/interaction", j)
         self.stop_mqtt()
 
-    ###############################################################################################
     def convert_To_Voice(self,data):
         Data = json.loads(data)
         say = Data["content"]["say"]
@@ -62,7 +55,6 @@ class Mqtt():
         text_speech = pyttsx3.init()
         text_speech.say(say)
         text_speech.runAndWait()
-#####################################     MQTT    ###############################################################################################
 
     def on_connect(self, client, userdata, flags, rc):
             assert client == self._mqtt_cleint
@@ -86,11 +78,13 @@ class Mqtt():
 
             self.convert_To_Voice(msg)
 
+#####################################     CLASS TRIEN   ###############################################################################################
+
 class trien(Mqtt):
     count,  back, u, x, z = 0, 0,0, 0, 1
     per, dir,bar, color=0,0,0,(0, 255, 0)
     t, t1, t2, t3, t4, t5, t6, t7 = 100, 100, 100, 100, 100, 100, 100, 100 #In order to avoid re-sending messages
-
+    AngelPatientSituation =0
     f = open(r"../precalibration/test1.txt", "r")
     minimum = min(f)
     value_min = int(minimum.replace(',', ''))
@@ -100,36 +94,48 @@ class trien(Mqtt):
     value_max = int(maximum.replace(',', ''))
     value_max = value_max + 10
     f.close()
-    # حسبهن بالنسبه للمانيموم والماكسموم
-    if patientSituation == 0.25:
-        AngelPatientSituation = 33
-    elif patientSituation == 0.5:
-        AngelPatientSituation = 45
-    elif patientSituation == 0.75:
-        AngelPatientSituation = 58
-    else:
-        AngelPatientSituation = 72
+
 
     def __init__(self, mqtt_start: bool = False, def_triener: bool = False, mqtt_host: str = "localhost",
                  mqtt_port: int = 1883, mqtt_user: str = "mqtt", mqtt_password: str = "test",
-                 mqtt_keep_alive: int = 60):
+                 mqtt_keep_alive: int = 60,exercise_number="",side="",count="",patient_movement_range=""):
+
         super(trien,self).__init__()
+        self.side=side
+        self.exercise_number=exercise_number
+        self.count_Pa=int(count)
+        self.patient_movement_range=float(patient_movement_range)
+        print(self.side)
+        print(self.exercise_number)
+        print(self.count_Pa)
+        print(self.patient_movement_range)
+
         if def_triener:
             self.start_mqtt()
             self.TrienerLoop()
 
+        # حسبهن بالنسبه للمانيموم والماكسموم
+        if self.patient_movement_range == 0.25:
+            self.AngelPatientSituation = 33
+        elif self.patient_movement_range == 0.5:
+            self.AngelPatientSituation = 45
+        elif self.patient_movement_range == 0.75:
+            self.AngelPatientSituation = 58
+        elif self.patient_movement_range == 1:
+            self.AngelPatientSituation = 72
+
     def TrienerLoop(self):
         while (True):
-            success, img = cap.read()
+            success, img = self.cap.read()
             img = cv2.resize(img, (1280, 720))
             # img = cv2.imread("AiTrainer/test.jpg")
             img = detector.findPose(img, False)
             lmList = detector.findPosition(img, False)
-            if handSide == 0:
+            if self.side == "left":
                 calculation_Points_P1=13
                 calculation_Points_P2=11
                 calculation_Points_P3=23
-            elif handSide == 1:
+            elif self.side == "right":
                 calculation_Points_P1=14
                 calculation_Points_P2=12
                 calculation_Points_P3=24
@@ -139,16 +145,16 @@ class trien(Mqtt):
             if len(lmList) != 0:
                 angle, difference, position = detector.findAngle(img, calculation_Points_P1, calculation_Points_P2,
                                                                  calculation_Points_P3)
-                self.Count(angle)
+                self.count_Calculator(angle)
 
                 if self.end_While == True:
                     self.stop_mqtt()
                     break
-                if self.count == 5:
+                if self.count == self.count_Pa:
                     self.stop_Ubung()
                     break
                 # ###################### # ######################
-                if patientSituation == 1:
+                if self.patient_movement_range == 1:
                     if angle > 75:
                         self.ang(img)
 
@@ -189,10 +195,10 @@ class trien(Mqtt):
                 print("keinee")
 
 
-        cap.release()
+        self.cap.release()
         cv2.destroyAllWindows()
 
-    def Count(self,angle):
+    def count_Calculator(self,angle):
         self.per = np.interp(angle, (self.value_min, self.value_max), (0, 100))
         self.bar = np.interp(angle, (self.value_min, self.value_max), (650, 100))
         self.color = (255, 0, 255)
@@ -369,7 +375,7 @@ class trien(Mqtt):
     def ang9(self):
         j = 30
         while j >= 0 and self.u == 0:
-            ret, img = cap.read()
+            ret, img = self.cap.read()
             img = cv2.resize(img, (1280, 720))
             if j > 10:
 
@@ -443,3 +449,5 @@ if __name__ == "__main__":
     print("Hello world!")
 else:
     mqtt=Mqtt()
+
+
