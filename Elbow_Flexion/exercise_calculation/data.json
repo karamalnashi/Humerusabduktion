@@ -167,6 +167,7 @@
                     "content": {
                           "say": "Ist das Richtigae person?",
                         "image": "",
+                        "event": "frage uber position",
                         "answers": [
                             ""
                         ],
@@ -204,8 +205,10 @@
                     "message_uuid": "DialogEngine1-interaction19635f4c-52b0-11ec-956f-f8b156cd740c",
 
                     "content": {
-                          "say": "es gibt kein Person",
+                        "say": "es gibt kein Person",
                         "image": "",
+                        "event":"ERROR",
+                        "event_details": "no_person_on_screen",
                         "answers": [
                             ""
                         ],

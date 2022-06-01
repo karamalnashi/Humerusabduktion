@@ -4,27 +4,30 @@ import json
 import Pose_Module as pm
 from performance_calculation_automated import trien
 from Control import trien_Finger
-#from test import trien
 
 broker_address = "localhost"
 port = 1883
+#broker_address = "ebrain.informatik.uni-rostock.de"
+#port = 1883
 user = "mqtt"
 password = "test"
 detector = pm.poseDetector()
 class Mqtt_conniction():
     def __init__(self):
-        self.client1 = mqttclient.Client("MQTT")
-        self.client1.on_message = self.on_message
-        self.client1.username_pw_set(user, password=password)
-        self.client1.on_connect = self.on_connect
-        self.client1.connect(broker_address, port=port)
-        self.client1.subscribe("ebrain/#")
-        self.client1.loop_forever()
 
+        self.layout_type=""
         self.exercise_number=""
         self.side = ""
         self.count = ""
         self.patient_movement_range = ""
+        self.client1 = mqttclient.Client("MQTT")
+        self.client1.on_message = self.on_message
+        self.client1.username_pw_set(user,password)
+        self.client1.on_connect = self.on_connect
+        self.client1.connect(broker_address, port)
+        self.client1.subscribe("ebrain/#")
+        self.client1.loop_forever()
+
 
     def person_dec(self):
         cap = cv2.VideoCapture(0)
@@ -55,9 +58,17 @@ class Mqtt_conniction():
 
     def on_message(self,client1, userdata, message):
         print("message recieved 1= " + str(message.payload.decode("utf-8")))
-        print("message topic 1=", message.topic)
-
-        if message.topic == "ebrain/start":
+        print("message topic 12=", message.topic)
+        msg = message.payload.decode("utf-8")
+        Data = json.loads(msg)
+        if "content" in Data:
+            self.layout_type=Data["content"]["layout_type"]
+            self.exercise_number = Data["content"]["abt_configuration_dict"]["exercise_number"]
+            self.side = Data["content"]["abt_configuration_dict"]["side"]
+            self.count = Data["content"]["abt_configuration_dict"]["count"]
+            self.patient_movement_range = Data["content"]["abt_configuration_dict"]["patient_movement_range"]
+        #print(self.side)
+        if self.layout_type == "start":
 
             person_result = self.person_dec()
             if person_result == True:
@@ -75,25 +86,18 @@ class Mqtt_conniction():
                 client1.publish("ebrain/DialogEngine1/interaction", y)
 
 
-        elif message.topic == "ebrain/ja":
+        elif self.layout_type == "ja":
             if self.exercise_number==1:
+                print("erste ubung")
                 t = trien(mqtt_start=True, def_triener=True,exercise_number=self.exercise_number,side=self.side,count=self.count,patient_movement_range=self.patient_movement_range)
             elif self.exercise_number==2:
-                t=trien_Finger(mqtt_start=True, def_triener=True,exercise_number=self.exercise_number,side=self.side,count=self.count,patient_movement_range=self.patient_movement_range)
                 print("zweite ubung")
+                t=trien_Finger(mqtt_start=True, def_triener=True,exercise_number=self.exercise_number,side=self.side,count=self.count,patient_movement_range=self.patient_movement_range)
 
 
-        elif message.topic == "ebrain/DialogEngine1/interaction":
+
+        elif self.layout_type == "":
             print(message.topic)
-
-        elif message.topic == "ebrain/armbasistraining_digital":
-            msg = message.payload.decode("utf-8")
-            Data = json.loads(msg)
-            self.exercise_number = Data["exercise_number"]
-            self.side = Data["side"]
-            self.count = Data["count"]
-            self.patient_movement_range = Data["patient_movement_range"]
-            print(self.side)
 
 
 

@@ -25,8 +25,8 @@ class Mqtt():
         self.cap = cv2.VideoCapture(0)  # capture by your own camera
         path_current = os.path.abspath(os.getcwd())
         hasFrame, framee = self.cap.read()
-        frameeWidth = framee.shape[1]
-        frameeHeight = framee.shape[0]
+        #frameeWidth = framee.shape[1]
+        #frameeHeight = framee.shape[0]
         os.path.abspath(os.getcwd())
         if mqtt_start:
             self.start_mqtt()
@@ -42,7 +42,7 @@ class Mqtt():
 
     def stop_Ubung(self):
         print("die arbeit ist Fertig")
-        f = open('data.json')
+        f = open('data_finger.json')
         data = json.load(f)
         i = data[4]
         j = json.dumps(i)
@@ -140,7 +140,7 @@ class trien_Finger(Mqtt):
                                 cv2.FONT_HERSHEY_PLAIN, 2,
                                 (255, 0, 0), 2)
                     # cv2.imshow("Image", img)
-                    f = open('data.json')
+                    f = open('data_finger.json')
                     data = json.load(f)
                     x = data[0]
                     y1 = json.dumps(x)
@@ -157,7 +157,7 @@ class trien_Finger(Mqtt):
                                 cv2.FONT_HERSHEY_PLAIN, 2,
                                 (255, 0, 0), 2)
                     # cv2.imshow("Image", img)
-                    f = open('data.json')
+                    f = open('data_finger.json')
                     data = json.load(f)
                     x = data[1]
                     y2 = json.dumps(x)
@@ -173,10 +173,13 @@ class trien_Finger(Mqtt):
             else:
                 print("keine")
 
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                break
+
 
 
         self.cap.release()
-        cv2.destroyAllWindows()
+        cv2.destroyAllWitreyndows()
 
     def count_Calculator(self,lmList):
         self.x1, self.y1 = lmList[4][1], lmList[4][2]
@@ -203,33 +206,40 @@ class trien_Finger(Mqtt):
         success, img = self.cap.read()
         img = detector.findHands(img)
         lmList = detector.findPosition(img, draw=False)
-        thumb_tip = lmList[4][1]
-        print(thumb_tip)
-        pinky_tip = lmList[20][1]
-        print(pinky_tip)
+        try:
+            thumb_tip = lmList[4][1]
+            print(thumb_tip)
+            pinky_tip = lmList[20][1]
+            print(pinky_tip)
+            if self.side == "left":
+                if thumb_tip < pinky_tip:
+                    pass
+                else:
+                    print("Bitte drehen Sie Ihre Hand")
+                    f = open('data_finger.json')
+                    data = json.load(f)
+                    x = data[2]
+                    y3 = json.dumps(x)
+                    self._mqtt_cleint.publish("ebrain/DialogEngine1/interaction", y3)
+                    time.sleep(6)
+            elif self.side == "right":
+                if thumb_tip < pinky_tip:
+                    print("Bitte drehen Sie Ihre Hand")
+                    f = open('data_finger.json')
+                    data = json.load(f)
+                    x = data[2]
+                    y3 = json.dumps(x)
+                    self._mqtt_cleint.publish("ebrain/DialogEngine1/interaction", y3)
+                    time.sleep(6)
+                else:
+                    pass
+            else:
+                print("keine Hand-side")
+        except:
+            print("list index out of range")
 
-        if self.side == "left":
-            if thumb_tip < pinky_tip:
-                pass
-            else:
-                print("Bitte drehen Sie Ihre Hand")
-                f = open('data.json')
-                data = json.load(f)
-                x = data[2]
-                y3 = json.dumps(x)
-                self._mqtt_cleint.publish("ebrain/DialogEngine1/interaction", y3)
-                time.sleep(6)
-        elif  self.side == "right":
-            if thumb_tip < pinky_tip:
-                print("Bitte drehen Sie Ihre Hand")
-                f = open('data.json')
-                data = json.load(f)
-                x = data[2]
-                y3 = json.dumps(x)
-                self._mqtt_cleint.publish("ebrain/DialogEngine1/interaction", y3)
-                time.sleep(6)
-            else:
-                pass
+
+
 
     def draw(self,img):
         cv2.circle(img, (self.x1, self.y1), 7, (255, 0, 255), cv2.FILLED)

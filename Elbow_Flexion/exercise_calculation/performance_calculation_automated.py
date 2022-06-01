@@ -13,13 +13,14 @@ class Mqtt():
     def __init__(self,mqtt_start: bool=False ,def_triener: bool=False, mqtt_host:str="localhost" , mqtt_port: int =1883 , mqtt_user:str="mqtt", mqtt_password:str="test",mqtt_keep_alive:int=60):
         self._mqtt_host=mqtt_host
         self._mqtt_port=mqtt_port
+        self.layout_type = ""
+        self.end_While=False
         self._mqtt_keep_alive=mqtt_keep_alive
         self._mqtt_cleint= mqttclient.Client("MQTT")
         self._mqtt_cleint.username_pw_set(mqtt_user, password=mqtt_password)
         self._mqtt_cleint.on_connect=self.on_connect
         self._mqtt_cleint.on_message=self.on_message
 
-        self.end_While=False
         self.def_triener=def_triener
         self.cap = cv2.VideoCapture(0)  # capture by your own camera
         path_current = os.path.abspath(os.getcwd())
@@ -27,6 +28,7 @@ class Mqtt():
         frameeWidth = framee.shape[1]
         frameeHeight = framee.shape[0]
         os.path.abspath(os.getcwd())
+        print(mqtt_start)
         if mqtt_start:
             self.start_mqtt()
 
@@ -70,13 +72,14 @@ class Mqtt():
             assert client == self._mqtt_cleint
             print("message recieved = " + str(message.payload.decode("utf-8")))
             print("message topic=", message.topic)
-            msg = message.payload.decode("utf-8")
-
-            if message.topic == "ebrain/end":
+            payload = message.payload.decode("utf-8")
+            msg = json.loads(payload)
+            self.layout_type = msg["content"]["layout_type"]
+            if self.layout_type == "end":
                 self.stop_mqtt()
                 self.end_While=True
 
-            self.convert_To_Voice(msg)
+            self.convert_To_Voice(payload)
 
 #####################################     CLASS TRIEN   ###############################################################################################
 
@@ -193,6 +196,9 @@ class trien(Mqtt):
 
             else:
                 print("keinee")
+
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                break
 
 
         self.cap.release()
@@ -442,6 +448,7 @@ class trien(Mqtt):
         x = data[6]
         y= json.dumps(x)
         self._mqtt_cleint.publish("ebrain/DialogEngine1/interaction", y)
+        print("difference :")
         print(difference)
 
 
