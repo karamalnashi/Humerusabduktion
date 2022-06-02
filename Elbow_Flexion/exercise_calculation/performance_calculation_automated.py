@@ -86,7 +86,7 @@ class Mqtt():
 class trien(Mqtt):
     count,  back, u, x, z = 0, 0,0, 0, 1
     per, dir,bar, color=0,0,0,(0, 255, 0)
-    t, t1, t2, t3, t4, t5, t6, t7 = 100, 100, 100, 100, 100, 100, 100, 100 #In order to avoid re-sending messages
+    t, t1, t2, t3, t4, t5, t6, t7,t8 = 100, 100, 100, 100, 100, 100, 100, 100, 100 #In order to avoid re-sending messages
     AngelPatientSituation =0
     f = open(r"../precalibration/test1.txt", "r")
     minimum = min(f)
@@ -113,19 +113,21 @@ class trien(Mqtt):
         print(self.count_Pa)
         print(self.patient_movement_range)
 
-        if def_triener:
-            self.start_mqtt()
-            self.TrienerLoop()
-
-        # حسبهن بالنسبه للمانيموم والماكسموم
+        #Todo حسبهن بالنسبه للمانيموم والماكسموم
         if self.patient_movement_range == 0.25:
             self.AngelPatientSituation = 33
         elif self.patient_movement_range == 0.5:
             self.AngelPatientSituation = 45
+            print(self.AngelPatientSituation)
         elif self.patient_movement_range == 0.75:
             self.AngelPatientSituation = 58
         elif self.patient_movement_range == 1:
             self.AngelPatientSituation = 72
+
+
+        if def_triener:
+            self.start_mqtt()
+            self.TrienerLoop()
 
     def TrienerLoop(self):
         while (True):
@@ -182,6 +184,7 @@ class trien(Mqtt):
                     elif angle > 70:
                         self.ang7(img)
                     elif self.AngelPatientSituation - 5 < angle < self.AngelPatientSituation and self.back == 0:
+                        print(self.AngelPatientSituation)
                         self.ang8(img)
                     elif self.AngelPatientSituation < angle < self.AngelPatientSituation + 5 and self.back == 0:
                         self.ang9()
@@ -209,7 +212,6 @@ class trien(Mqtt):
         self.bar = np.interp(angle, (self.value_min, self.value_max), (650, 100))
         self.color = (255, 0, 255)
 
-        # # Left Arm
         if self.per == 100:
             self.color = (0, 255, 0)
             if self.dir == 0:
@@ -238,7 +240,7 @@ class trien(Mqtt):
         else:
             self.t = self.t + 1
             print(self.t)
-        self.t1, self.t2, self.t3, self.t4, self.t5, self.t6, self.t7= 100, 100, 100, 100, 100, 100, 100
+        self.t1, self.t2, self.t3, self.t4, self.t5, self.t6, self.t7, self.t8=100, 100, 100, 100, 100, 100, 100, 100
         self.back = 1
 
     # if patientSituation == 1 and angle < 25 and back == 1
@@ -271,7 +273,7 @@ class trien(Mqtt):
         else:
             self.t1 = self.t1 + 1
             print(self.t1)
-        self.t, self.t2, self.t3, self.t4, self.t5, self.t6, self.t7 = 100, 100, 100, 100, 100, 100, 100
+        self.t, self.t2, self.t3, self.t4, self.t5, self.t6, self.t7, self.t8=100, 100, 100, 100, 100, 100, 100, 100
 
     # if patientSituation == 1 and 65 < angle < 70 and back == 0
     def ang3(self,img):
@@ -290,7 +292,7 @@ class trien(Mqtt):
         else:
             self.t2 = self.t2 + 1
             print(self.t2)
-        self.t, self.t1, self.t3, self.t4, self.t5, self.t6, self.t7 = 100, 100, 100, 100, 100, 100,100
+        self.t, self.t1, self.t3, self.t4, self.t5, self.t6, self.t7 , self.t8=100,100, 100, 100, 100, 100, 100,100
 
     # if patientSituation == 1 and 70 < angle<= 75 and back == 0
     def ang4(self,img):
@@ -309,7 +311,7 @@ class trien(Mqtt):
         else:
             self.t3 = self.t3 + 1
             print(self.t3)
-        self.t, self.t1, self.t2, self.t4, self.t5, self.t6, self.t7 = 100, 100, 100, 100, 100, 100, 100
+        self.t, self.t1, self.t2, self.t4, self.t5, self.t6, self.t7 , self.t8=100, 100, 100, 100, 100, 100, 100, 100
         self.back = 1
 
     # if patientSituation != 1 and angle < 25 and back == 1
@@ -335,7 +337,13 @@ class trien(Mqtt):
         data = json.load(f)
         x = data[0]
         y = json.dumps(x)
-        self._mqtt_cleint.publish("ebrain/DialogEngine1/interaction", y)
+        if self.t8 > 99:
+            self._mqtt_cleint.publish("ebrain/DialogEngine1/interaction", y)
+            self.t8 = 0
+        else:
+            self.t8 = self.t8+ 1
+            print(self.t8)
+        self.t, self.t1, self.t2, self.t3,self.t4, self.t5, self.t6, self.t7 =100, 100, 100, 100, 100, 100, 100, 100
 
     # if patientSituation != 1 and angle > 70
     def ang7(self,img):
@@ -354,7 +362,7 @@ class trien(Mqtt):
         else:
             self.t4 = self.t4 + 1
             print(self.t4)
-        self.t, self.t1, self.t2, self.t3, self.t5, self.t6, self.t7 = 100, 100, 100, 100, 100, 100, 100
+        self.t, self.t1, self.t2, self.t3, self.t5, self.t6, self.t7 , self.t8=100, 100, 100, 100, 100, 100, 100, 100
         self.back = 1
 
     # if patientSituation != 1  AngelPatientSituation - 5 < angle < AngelPatientSituation and back==0
@@ -375,7 +383,7 @@ class trien(Mqtt):
         else:
             self.t5 =self.t5 + 1
             print(self.t5)
-        self.t, self.t1, self.t2, self.t3, self.t4, self.t6, self.t7 = 100, 100, 100, 100, 100, 100, 100
+        self.t, self.t1, self.t2, self.t3, self.t4, self.t6, self.t7 , self.t8=100, 100, 100, 100, 100, 100, 100, 100
 
     # if patientSituation != 1  AngelPatientSituation < angle < AngelPatientSituation + 5 and back==0
     def ang9(self):
@@ -402,7 +410,7 @@ class trien(Mqtt):
                     self.t6 = 0
                 else:
                     self.t6 = self.t6 + 1
-                self.t, self.t1, self.t2, self.t3, self.t5, self.t4, self.t7 = 100, 100, 100, 100, 100, 100, 100
+                self.t, self.t1, self.t2, self.t3, self.t5, self.t4, self.t7 , self.t8=100, 100, 100, 100, 100, 100, 100, 100
             elif j <= 9:
 
                 cv2.putText(img, str("Ihr Helfer darf jetzt den Rest ergaenzen"),
@@ -418,7 +426,7 @@ class trien(Mqtt):
                     self.t7 = 0
                 else:
                     self.t7 = self.t7 + 1
-                self.t, self.t1, self.t2, self.t3, self.t5, self.t6, self.t4 = 100, 100, 100, 100, 100, 100, 100
+                self.t, self.t1, self.t2, self.t3, self.t5, self.t6, self.t4 , self.t8=100, 100, 100, 100, 100, 100, 100, 100
             cv2.imshow("Image", img)
             cv2.waitKey(125)
 
@@ -427,15 +435,12 @@ class trien(Mqtt):
                 self.u = 1
 
     def draw(self,img):
-        # Draw Bar link
         cv2.rectangle(img, (1100, 100), (1175, 650), 3)
         cv2.rectangle(img, (1100, int(self.bar)), (1175, 650), self.color, cv2.FILLED)
         cv2.putText(img, f'{int(self.per)} %', (1100, 75), cv2.FONT_HERSHEY_PLAIN, 2,
                     self.color, 4)
-
-        # Draw Curl Count link
         # cv2.rectangle(img, (0, 450), (250, 720), (0, 255, 0), cv2.FILLED)
-        cv2.putText(img, "L: " + str(self.count), (1050, 720), cv2.FONT_HERSHEY_PLAIN, 5,
+        cv2.putText(img, "C: " + str(int(self.count)), (1050, 720), cv2.FONT_HERSHEY_PLAIN, 5,
                     (255, 0, 0), 5)
 
     def differenceErorr(self,img,difference):

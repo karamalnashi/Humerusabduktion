@@ -44,7 +44,7 @@ class Mqtt():
         print("die arbeit ist Fertig")
         f = open('data_finger.json')
         data = json.load(f)
-        i = data[4]
+        i = data[3]
         j = json.dumps(i)
         self._mqtt_cleint.publish("ebrain/DialogEngine1/interaction", j)
         self.stop_mqtt()
@@ -179,7 +179,7 @@ class trien_Finger(Mqtt):
 
 
         self.cap.release()
-        cv2.destroyAllWitreyndows()
+        cv2.destroyAllWindows()
 
     def count_Calculator(self,lmList):
         self.x1, self.y1 = lmList[4][1], lmList[4][2]

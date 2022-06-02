@@ -54,7 +54,7 @@ ja= {
         "exercise_number": 2,
         "side": "left",
         "count": "10",
-        "patient_movement_range": 0.75,
+        "patient_movement_range": 1
       }
      }
 
