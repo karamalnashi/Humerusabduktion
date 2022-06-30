@@ -51,9 +51,9 @@ ja= {
         "layout_type": "ja",
         "stateID": "0_start",
         "abt_configuration_dict":{
-        "exercise_number": 2,
+        "exercise_number": 1,
         "side": "left",
-        "count": "10",
+        "count": "5",
         "patient_movement_range": 1
       }
      }

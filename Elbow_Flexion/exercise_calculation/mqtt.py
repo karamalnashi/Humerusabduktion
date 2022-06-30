@@ -5,12 +5,12 @@ import Pose_Module as pm
 from performance_calculation_automated import trien
 from Control import trien_Finger
 
-broker_address = "localhost"
-port = 1883
-#broker_address = "ebrain.informatik.uni-rostock.de"
+broker_address = "192.168.1.7"
 #port = 1883
-user = "mqtt"
-password = "test"
+#broker_address = "localhost"
+port = 1883
+user = ""
+password = ""
 detector = pm.poseDetector()
 class Mqtt_conniction():
     def __init__(self):
@@ -67,6 +67,7 @@ class Mqtt_conniction():
             self.side = Data["content"]["abt_configuration_dict"]["side"]
             self.count = Data["content"]["abt_configuration_dict"]["count"]
             self.patient_movement_range = Data["content"]["abt_configuration_dict"]["patient_movement_range"]
+            self.time_pause=Data["content"]["abt_configuration_dict"]["time_pause"]
         #print(self.side)
         if self.layout_type == "start":
 
@@ -89,7 +90,7 @@ class Mqtt_conniction():
         elif self.layout_type == "ja":
             if self.exercise_number==1:
                 print("erste ubung")
-                t = trien(mqtt_start=True, def_triener=True,exercise_number=self.exercise_number,side=self.side,count=self.count,patient_movement_range=self.patient_movement_range)
+                t = trien(mqtt_start=True, def_triener=True,exercise_number=self.exercise_number,side=self.side,count=self.count,patient_movement_range=self.patient_movement_range, time_pause=self.time_pause)
             elif self.exercise_number==2:
                 print("zweite ubung")
                 t=trien_Finger(mqtt_start=True, def_triener=True,exercise_number=self.exercise_number,side=self.side,count=self.count,patient_movement_range=self.patient_movement_range)

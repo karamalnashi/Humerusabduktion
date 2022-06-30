@@ -4,13 +4,14 @@ import paho.mqtt.client as mqttclient
 import pyttsx3
 import json
 import Pose_Module as pm
+import time
 import os
 detector = pm.poseDetector()
 
 
 
 class Mqtt():
-    def __init__(self,mqtt_start: bool=False ,def_triener: bool=False, mqtt_host:str="localhost" , mqtt_port: int =1883 , mqtt_user:str="mqtt", mqtt_password:str="test",mqtt_keep_alive:int=60):
+    def __init__(self,mqtt_start: bool=False ,def_triener: bool=False, mqtt_host:str="192.168.1.7" , mqtt_port: int =1883 , mqtt_user:str="", mqtt_password:str="",mqtt_keep_alive:int=60):
         self._mqtt_host=mqtt_host
         self._mqtt_port=mqtt_port
         self.layout_type = ""
@@ -20,7 +21,6 @@ class Mqtt():
         self._mqtt_cleint.username_pw_set(mqtt_user, password=mqtt_password)
         self._mqtt_cleint.on_connect=self.on_connect
         self._mqtt_cleint.on_message=self.on_message
-
         self.def_triener=def_triener
         self.cap = cv2.VideoCapture(0)  # capture by your own camera
         path_current = os.path.abspath(os.getcwd())
@@ -52,11 +52,14 @@ class Mqtt():
 
     def convert_To_Voice(self,data):
         Data = json.loads(data)
-        say = Data["content"]["say"]
-        print(say)
-        text_speech = pyttsx3.init()
-        text_speech.say(say)
-        text_speech.runAndWait()
+        try:
+            say = Data["content"]["say"]
+            print(say)
+            text_speech = pyttsx3.init()
+            text_speech.say(say)
+            text_speech.runAndWait()
+        except:
+            print("keine content")
 
     def on_connect(self, client, userdata, flags, rc):
             assert client == self._mqtt_cleint
@@ -74,10 +77,14 @@ class Mqtt():
             print("message topic=", message.topic)
             payload = message.payload.decode("utf-8")
             msg = json.loads(payload)
-            self.layout_type = msg["content"]["layout_type"]
-            if self.layout_type == "end":
-                self.stop_mqtt()
-                self.end_While=True
+            try:
+                self.layout_type = msg["content"]["layout_type"]
+                if self.layout_type == "end":
+                    self.stop_mqtt()
+                    self.end_While = True
+            except:
+                print("keine content")
+
 
             self.convert_To_Voice(payload)
 
@@ -99,11 +106,15 @@ class trien(Mqtt):
     f.close()
 
 
-    def __init__(self, mqtt_start: bool = False, def_triener: bool = False, mqtt_host: str = "localhost",
-                 mqtt_port: int = 1883, mqtt_user: str = "mqtt", mqtt_password: str = "test",
-                 mqtt_keep_alive: int = 60,exercise_number="",side="",count="",patient_movement_range=""):
+    def __init__(self, mqtt_start: bool = False, def_triener: bool = False, mqtt_host: str = "192.168.1.7",
+                 mqtt_port: int = 1883, mqtt_user: str = "", mqtt_password: str = "",
+                 mqtt_keep_alive: int = 60,exercise_number="",side="",count="",patient_movement_range="",time_pause=""):
 
         super(trien,self).__init__()
+        self.timer_end=False
+        self.weiter_wartet = True
+
+        self.time_p=time_pause/2
         self.side=side
         self.exercise_number=exercise_number
         self.count_Pa=int(count)
@@ -160,34 +171,67 @@ class trien(Mqtt):
                     break
                 # ###################### # ######################
                 if self.patient_movement_range == 1:
-                    if angle > 75:
-                        self.ang(img)
 
-                    elif angle < 65:
-                        if angle < 25 and self.back == 1:
-                            self.ang1(img)
-                        elif angle < 65 and self.back == 0:
+                    if self.back ==0:
+                        if angle < 35 and self.timer_end==False:
                             self.ang2(img)
+                            self.timer(self.time_p+2)
+                        elif angle < 70 and self.timer_end ==True and self.weiter_wartet==True:
+                            self.ang3(img)
+                            self.timer(self.time_p+2)
+                            self.weiter_wartet=False
+                        elif angle > 70 and self.timer_end == True:
+                            self.ang4(img)
+                            self.timer(self.time_p+3)
+                            self.ang7(img)
+                            self.timer(self.time_p+2)
+                            self.weiter_wartet=True
 
-                    elif 65 < angle < 70 and self.back == 0:
-                        self.ang3(img)
-
-                    elif 70 < angle <= 75 and self.back == 0:
-                        self.ang4(img)
+                    else:
+                        if angle > 25 and self.weiter_wartet==True:
+                            self.ang3(img)
+                            self.timer(self.time_p+3)
+                            self.weiter_wartet=False
+                        elif angle <= 25 :
+                            self.ang1(img)
+                            self.timer(self.time_p+2)
+                            self.timer_end=False
+                            self.weiter_wartet=True
 
                     # ///////////Wenn der Patient nicht alleine trainieren kann///////////
                 else:
-                    if angle < 25 and self.back == 1:
-                        self.ang5(img)
-                    elif angle < 25 and self.back == 0:
+                    if angle < 25 and self.timer_end==False and  self.back == 0:
                         self.ang6(img)
-                    elif angle > 70:
-                        self.ang7(img)
-                    elif self.AngelPatientSituation - 5 < angle < self.AngelPatientSituation and self.back == 0:
+                        self.timer(self.time_p + 2)
+
+
+                    elif self.AngelPatientSituation - 5 < angle < self.AngelPatientSituation and self.weiter_wartet == True and self.back == 0:
                         print(self.AngelPatientSituation)
                         self.ang8(img)
+                        self.timer(self.time_p + 2)
+                        self.weiter_wartet = False
+
+
                     elif self.AngelPatientSituation < angle < self.AngelPatientSituation + 5 and self.back == 0:
                         self.ang9()
+                        self.timer(self.time_p + 2)
+
+                        #self.weiter_wartet = True
+
+
+                    elif angle > 70 and self.timer_end == True:
+                            self.ang4(img)
+                            self.timer(self.time_p+3)
+                            self.ang7(img)
+                            self.timer(self.time_p+2)
+                            self.weiter_wartet=True
+
+
+                    elif angle <= 25 and self.back == 1:
+                            self.ang1(img)
+                            self.timer(self.time_p+2)
+                            self.timer_end=False
+                            self.weiter_wartet=True
 
                 # -------------------------------------------------------------------
                 self.draw(img)
@@ -206,6 +250,16 @@ class trien(Mqtt):
 
         self.cap.release()
         cv2.destroyAllWindows()
+
+    def timer(self,time_pause):
+        while time_pause:
+            time.sleep(1)
+            print(time_pause )
+            time_pause-= 1
+        self.timer_end=True
+
+
+
 
     def count_Calculator(self,angle):
         self.per = np.interp(angle, (self.value_min, self.value_max), (0, 100))
@@ -316,7 +370,7 @@ class trien(Mqtt):
 
     # if patientSituation != 1 and angle < 25 and back == 1
     def ang5(self,img):
-        cv2.putText(img, str("Danke"), (20, 50),
+        cv2.putText(img, str("Gut,und jetzt halten"), (20, 50),
                     cv2.FONT_HERSHEY_PLAIN, 3,
                     (255, 0, 0), 3)
         f = open('data.json')

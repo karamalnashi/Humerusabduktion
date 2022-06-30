@@ -65,7 +65,7 @@
                     "message_uuid": "DialogEngine1-interaction19635f4c-52b0-11ec-956f-f8b156cd740c",
 
                     "content": {
-                        "say": "einen Moment da bleiben und dabei entspannen",
+                        "say": "Gut,und jetzt halten",
                         "image": "",
                         "answers": [
                             ""
@@ -146,7 +146,7 @@
                     "message_uuid": "DialogEngine1-interaction19635f4c-52b0-11ec-956f-f8b156cd740c",
 
                     "content": {
-                          "say": "Danke",
+                          "say": "Gut,und jetzt halten",
                         "image": "",
                         "answers": [
                             ""
