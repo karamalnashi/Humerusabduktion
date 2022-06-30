@@ -93,7 +93,7 @@ class Mqtt_conniction():
                 t = trien(mqtt_start=True, def_triener=True,exercise_number=self.exercise_number,side=self.side,count=self.count,patient_movement_range=self.patient_movement_range, time_pause=self.time_pause)
             elif self.exercise_number==2:
                 print("zweite ubung")
-                t=trien_Finger(mqtt_start=True, def_triener=True,exercise_number=self.exercise_number,side=self.side,count=self.count,patient_movement_range=self.patient_movement_range)
+                t=trien_Finger(mqtt_start=True, def_triener=True,exercise_number=self.exercise_number,side=self.side,count=self.count,patient_movement_range=self.patient_movement_range, time_pause=self.time_pause)
 
 
 

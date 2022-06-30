@@ -73,9 +73,14 @@ class Mqtt():
             print("message topic=", message.topic)
             msg = message.payload.decode("utf-8")
 
-            if message.topic == "ebrain/end":
-                self.stop_mqtt()
-                self.end_While=True
+            try:
+                self.layout_type = msg["content"]["layout_type"]
+                if self.layout_type == "end":
+                    self.stop_mqtt()
+                    self.end_While = True
+            except:
+                print("keine content")
+
 
             self.convert_To_Voice(msg)
 
@@ -87,9 +92,10 @@ class trien_Finger(Mqtt):
     count = 0
     def __init__(self, mqtt_start: bool = False, def_triener: bool = False, mqtt_host: str = "localhost",
                  mqtt_port: int = 1883, mqtt_user: str = "mqtt", mqtt_password: str = "test",
-                 mqtt_keep_alive: int = 60,exercise_number="",side="",count="",patient_movement_range=""):
+                 mqtt_keep_alive: int = 60,exercise_number="",side="",count="",patient_movement_range="",time_pause=""):
 
         super(trien_Finger,self).__init__()
+        self.time_p=time_pause/2
         self.side=side
         self.exercise_number=exercise_number
         self.count_Pa=int(count)
@@ -146,6 +152,7 @@ class trien_Finger(Mqtt):
                     y1 = json.dumps(x)
                     if self.t > 99:
                         self._mqtt_cleint.publish("ebrain/DialogEngine1/interaction", y1)
+                        self.timer(self.time_p)
                         self.t = 0
                     else:
                         self.t = self.t + 1
@@ -163,6 +170,7 @@ class trien_Finger(Mqtt):
                     y2 = json.dumps(x)
                     if self.t1 > 99:
                         self._mqtt_cleint.publish("ebrain/DialogEngine1/interaction", y2)
+                        self.timer(self.time_p)
                         self.t1 = 0
                     else:
                         self.t1 = self.t1 + 1
@@ -238,7 +246,12 @@ class trien_Finger(Mqtt):
         except:
             print("list index out of range")
 
-
+    def timer(self,time_pause):
+        while time_pause:
+            time.sleep(1)
+            print(time_pause )
+            time_pause-= 1
+        self.timer_end=True
 
 
     def draw(self,img):
