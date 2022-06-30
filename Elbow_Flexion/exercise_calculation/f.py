@@ -1,17 +1,9 @@
 # "ebrain/armbasistraining_digital"
-abt_configuration_dict = {
-    "exercise_number": 1,
-    "side": "left",
-    "count": "10",
-    "patient_movement_range": 0.75,
 
-}
-
-
-
-
-
+#die Nachrichten, die Anwendung erhalten soll
 #################################################################################################
+
+#Die Nachricht, die die Anwendung dazu veranlasst, zu arbeiten und nach dem Patienten zu suchen
 start= {
     "api_version": "v0.1.0",
     "time": 1638367683.530698,
@@ -31,10 +23,9 @@ start= {
 
 }
 
-
-
 ##########################################################################################
-topic ="ebrain/#"
+#Diese Meldung soll die Frage des Programms beantworten, ob dies der richtige Patient ist oder nicht, der auf der Kamera erscheint.
+#Die Informationen des Patienten werden über diese Nachricht gesendet
 ja= {
     "api_version": "v0.1.0",
     "time": 1638367683.530698,
@@ -54,17 +45,15 @@ ja= {
         "exercise_number": 1,
         "side": "left",
         "count": "5",
-        "patient_movement_range": 1
+        "patient_movement_range": 1,
+        "time_pause":12
       }
      }
 
 
 }
-
-
-
 ####################################################################################
-
+#Diese Meldung dient nach Beendigung des Trainings dazu, die Trainingsarbeit zu stoppen
 end= {
     "api_version": "v0.1.0",
     "time": 1638367683.530698,

@@ -5,8 +5,11 @@
 
 $ pipenv run Mqtt.py
 
-
-
+##die Nachrichten, die Anwendung erhalten soll
+$ in file (f.py) finden Sie:
+*Die Nachricht, die die Anwendung dazu veranlasst, zu arbeiten und nach dem Patienten zu suchen.
+*Die Meldung soll die Frage des Programms beantworten, ob dies der richtige Patient ist oder nicht, der auf der Kamera erscheint.Die Informationen des Patienten werden über diese Nachricht gesendet
+*Die Meldung dient nach Beendigung des Trainings dazu, die Trainingsarbeit zu stoppen
 ## Maximum and minimum values
 
 * the maximum and minimum values are update automatically 
