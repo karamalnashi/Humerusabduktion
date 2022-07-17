@@ -11,7 +11,7 @@ detector = pm.poseDetector()
 
 
 class Mqtt():
-    def __init__(self,mqtt_start: bool=False ,def_triener: bool=False, mqtt_host:str="192.168.1.7" , mqtt_port: int =1883 , mqtt_user:str="", mqtt_password:str="",mqtt_keep_alive:int=60):
+    def __init__(self,mqtt_start: bool=False ,def_triener: bool=False, mqtt_host:str="localhost", mqtt_port: int =1883 , mqtt_user:str="", mqtt_password:str="",mqtt_keep_alive:int=60):
         self._mqtt_host=mqtt_host
         self._mqtt_port=mqtt_port
         self.layout_type = ""

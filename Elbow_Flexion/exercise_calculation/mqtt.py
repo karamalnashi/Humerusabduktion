@@ -5,9 +5,9 @@ import Pose_Module as pm
 from performance_calculation_automated import trien
 from Control import trien_Finger
 
-broker_address = "192.168.1.7"
+#broker_address = "192.168.1.7"
 #port = 1883
-#broker_address = "localhost"
+broker_address = "localhost"
 port = 1883
 user = ""
 password = ""
@@ -61,13 +61,15 @@ class Mqtt_conniction():
         print("message topic 12=", message.topic)
         msg = message.payload.decode("utf-8")
         Data = json.loads(msg)
-        if "content" in Data:
-            self.layout_type=Data["content"]["layout_type"]
+        try:
+            self.layout_type = Data["content"]["layout_type"]
             self.exercise_number = Data["content"]["abt_configuration_dict"]["exercise_number"]
             self.side = Data["content"]["abt_configuration_dict"]["side"]
             self.count = Data["content"]["abt_configuration_dict"]["count"]
             self.patient_movement_range = Data["content"]["abt_configuration_dict"]["patient_movement_range"]
-            self.time_pause=Data["content"]["abt_configuration_dict"]["time_pause"]
+            self.time_pause = Data["content"]["abt_configuration_dict"]["time_pause"]
+        except:
+            print("Erorr in content")
         #print(self.side)
         if self.layout_type == "start":
 
