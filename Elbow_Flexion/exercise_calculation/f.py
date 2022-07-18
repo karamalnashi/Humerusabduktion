@@ -4,7 +4,7 @@
 #################################################################################################
 
 #Die Nachricht, die die Anwendung dazu veranlasst, zu arbeiten und nach dem Patienten zu suchen
-start= {
+{
     "api_version": "v0.1.0",
     "time": 1638367683.530698,
     "time_hr": "2021-12-01T15:08:03.530698",
@@ -26,7 +26,7 @@ start= {
 ##########################################################################################
 #Diese Meldung soll die Frage des Programms beantworten, ob dies der richtige Patient ist oder nicht, der auf der Kamera erscheint.
 #Die Informationen des Patienten werden über diese Nachricht gesendet
-ja= {
+{
     "api_version": "v0.1.0",
     "time": 1638367683.530698,
     "time_hr": "2021-12-01T15:08:03.530698",
@@ -54,7 +54,7 @@ ja= {
 
 ####################################################################################
 #Diese Meldung dient nach Beendigung des Trainings dazu, die Trainingsarbeit zu stoppen
-end= {
+{
     "api_version": "v0.1.0",
     "time": 1638367683.530698,
     "time_hr": "2021-12-01T15:08:03.530698",
